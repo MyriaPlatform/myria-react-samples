@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getAssetsByOwnerPublicKey } from "../samples/assets/assets-by-public-key";
+import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
 import { getMyriaClient } from "../samples/common/myria-client";
 import '../assets/styles.css';
 
@@ -8,7 +8,7 @@ type Props = {
 	account: string
 }
 
-function AssetsView({ isConnected, account }: Props) {
+function AssetsView({ isConnected }: Props) {
 	const [nfts, setNfts] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [err, setErr] = useState('');
@@ -18,7 +18,7 @@ function AssetsView({ isConnected, account }: Props) {
 
 		try {
 			const client = await getMyriaClient(isConnected);
-			const result = await getAssetsByOwnerPublicKey(client, account);
+			const result = await getAssetsByStarkKey(client);
 			setNfts(result);
 		} catch (err: any) {
 			setErr(err.message);
