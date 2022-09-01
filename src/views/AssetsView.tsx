@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getAssetsByOwnerPublicKey } from "../samples/assets/stark-assets";
+import { getAssetsByOwnerPublicKey } from "../samples/assets/assets-by-public-key";
 import { getMyriaClient } from "../samples/common/myria-client";
 import '../assets/styles.css';
 

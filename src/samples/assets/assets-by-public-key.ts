@@ -1,10 +1,20 @@
 import {
-	MyriaClient,
-	OnchainAssetManager
+	EnvTypes,
+	IMyriaClient,
+	ModuleFactory,
+	MyriaClient
 } from "myria-core-sdk";
 
 export async function getAssetsByOwnerPublicKey(client: MyriaClient, account: string) {
-	const assetManager: OnchainAssetManager = new OnchainAssetManager(client);
+	const iClient: IMyriaClient = {
+    provider: null,
+    networkId: null,
+    web3: null,
+    env: EnvTypes.STAGING
+  };
+  const mClient = new MyriaClient(iClient);
+  const moduleFactory = new ModuleFactory(mClient);
+  const assetManager = moduleFactory.getAssetOnchainManager();
 
 	let nfts;
 	try {
