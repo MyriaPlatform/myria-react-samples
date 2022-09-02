@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { useState } from "react";
 import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
+// import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
 import { getMyriaClient } from "../samples/common/myria-client";
-import '../assets/styles.css';
 
 type Props = {
 	isConnected: boolean,
@@ -11,44 +12,75 @@ type Props = {
 function AssetsView({ isConnected }: Props) {
 	const [nfts, setNfts] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
 
-	const getAssets = async () => {
+	const loadMyriaClient = async () => {
+		return await getMyriaClient(isConnected);
+	}
+
+	useEffect(() => {
+		getNfts();
+	}, []);
+
+	const getNfts = async () => {
 		setIsLoading(true);
 
 		try {
-			const client = await getMyriaClient(isConnected);
+			const client = await loadMyriaClient();
 			const result = await getAssetsByStarkKey(client);
 			setNfts(result);
 		} catch (err: any) {
 			setErr(err.message);
 		} finally {
 			setIsLoading(false);
+			setIsLoaded(true);
 		}
+	}
+
+	const withdrawNft = async (param: any) => {
+		// const client = await loadMyriaClient();
+		// const withdrawalResult = withdrawErc721(client);
 	}
 
 	return (
 		<div>
-			<button onClick={getAssets}>Get Assets</button>
-
 			{err && <h3>{err}</h3>}
 
-			{isLoading && <h3>Loading...</h3>}
+			{isLoading && <h3>Loading assets...</h3>}
 
-			{(Array.isArray(nfts) && !isLoading)
-				? nfts.map(nft => (
-					<ul key={nft.id}>
-						<li>Id: {nft.id}</li>
-						<li>Name: {nft.name}</li>
-						<li>Token id: {nft.tokenId}</li>
-						<li>Token address: {nft.tokenAddress}</li>
-						<li>Asset id: {nft.assetMintId}</li>
-						<li>Vault Id: ?</li>
-						<li>Quantized Amount: ?</li>
-					</ul>
-				))
-				: null
-			}
+			<div className="bg-white">
+				<div className="mx-auto lg:max-w-7xl">
+					<h2 className="sr-only">Products</h2>
+					<div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+						{(Array.isArray(nfts) && isLoaded)
+							? nfts.map((nft: any) => (
+								<div key={nft.id} className="group relative">
+									<div className="min-h-72 w-fit overflow-hidden rounded-md bg-gray-200">
+										<img
+											src={nft.metadataOptional.image}
+											alt={nft.name}
+											className="h-72 w-fit object-cover object-center"
+										/>
+									</div>
+									<div className="mt-4 flex">
+										<div>
+											<h3 className="text-sm text-gray-700">
+												<span aria-hidden="true" className="absolute inset-0" />
+												{nft.name}
+											</h3>
+											<p className="mt-1 text-sm text-gray-500">{nft.description}</p>
+											<button className="mt-1 text-sm text-gray-500" onClick={() => withdrawNft((nft.id))}>Withdraw</button>
+										</div>
+										<p className="text-sm font-medium text-gray-900">#{nft.id}</p>
+									</div>
+								</div>
+							))
+							: (isLoaded && !(Array.isArray(nfts)) && <p>No assets available</p>)
+						}
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
