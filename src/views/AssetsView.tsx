@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState } from "react";
 import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
-// import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
+import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
 import { getMyriaClient } from "../samples/common/myria-client";
 
 type Props = {
@@ -9,15 +9,11 @@ type Props = {
 	account: string
 }
 
-function AssetsView({ isConnected }: Props) {
+function AssetsView({ isConnected, account }: Props) {
 	const [nfts, setNfts] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
-
-	const loadMyriaClient = async () => {
-		return await getMyriaClient(isConnected);
-	}
 
 	useEffect(() => {
 		getNfts();
@@ -27,7 +23,7 @@ function AssetsView({ isConnected }: Props) {
 		setIsLoading(true);
 
 		try {
-			const client = await loadMyriaClient();
+			const client = await getMyriaClient(isConnected);
 			const result = await getAssetsByStarkKey(client);
 			setNfts(result);
 		} catch (err: any) {
@@ -39,8 +35,9 @@ function AssetsView({ isConnected }: Props) {
 	}
 
 	const withdrawNft = async (param: any) => {
-		// const client = await loadMyriaClient();
-		// const withdrawalResult = withdrawErc721(client);
+		const client = await getMyriaClient(isConnected);
+		const withdrawalResult = await withdrawErc721(client, param, account);
+		console.log(withdrawalResult);
 	}
 
 	return (
@@ -66,11 +63,10 @@ function AssetsView({ isConnected }: Props) {
 									<div className="mt-4 flex">
 										<div>
 											<h3 className="text-sm text-gray-700">
-												<span aria-hidden="true" className="absolute inset-0" />
+												<span className="" />
 												{nft.name}
 											</h3>
-											<p className="mt-1 text-sm text-gray-500">{nft.description}</p>
-											<button className="mt-1 text-sm text-gray-500" onClick={() => withdrawNft((nft.id))}>Withdraw</button>
+											<button className="mt-1 text-sm text-gray-500" onClick={() => withdrawNft(nft)}>Withdraw</button>
 										</div>
 										<p className="text-sm font-medium text-gray-900">#{nft.id}</p>
 									</div>

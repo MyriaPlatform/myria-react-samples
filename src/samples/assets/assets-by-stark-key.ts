@@ -11,7 +11,7 @@ export async function getAssetsByStarkKey(client: MyriaClient) {
   let nfts;
   try {
     console.log(
-      `Retrieving a list of assets with ${starkKey} public key...`
+      `Retrieving a list of assets with ${starkKey} stark key...`
     );
     await assetManager.getFullInfoAssetByStarkKey(starkKey)
       .then((data) => {
