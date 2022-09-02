@@ -1,3 +1,3 @@
-.app {
-	flex: 1 0 auto;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
