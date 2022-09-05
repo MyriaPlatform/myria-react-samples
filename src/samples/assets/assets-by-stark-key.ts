@@ -1,12 +1,13 @@
 import {
+  DeveloperAccountManager,
   MyriaClient,
   OnchainAssetManager
 } from "myria-core-sdk";
-import config from "../config";
 
-export async function getAssetsByStarkKey(client: MyriaClient) {
-  const starkKey = config.stark_key;
+export async function getAssetsByStarkKey(client: MyriaClient, account: string) {
   const assetManager: OnchainAssetManager = new OnchainAssetManager(client);
+  const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
+  const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
 
   let nfts;
   try {

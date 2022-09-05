@@ -2,37 +2,36 @@ import { useEffect } from 'react';
 import { useState } from "react";
 import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
 import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
-import { getMyriaClient } from "../samples/common/myria-client";
+import { getMyriaClient } from '../samples/common/myria-client';
 
 type Props = {
 	isConnected: boolean,
 	account: string
 }
 
-function AssetsView({ isConnected, account }: Props) {
+function AssetsView({ account, isConnected }: Props) {
 	const [nfts, setNfts] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
 
 	useEffect(() => {
+		const getNfts = async () => {
+			setIsLoading(true);
+			try {
+				const client = await getMyriaClient(isConnected);
+				const result = await getAssetsByStarkKey(client, account);
+				setNfts(result);
+			} catch (err: any) {
+				setErr(err.message);
+			} finally {
+				setIsLoading(false);
+				setIsLoaded(true);
+			}
+		}
+
 		getNfts();
 	}, []);
-
-	const getNfts = async () => {
-		setIsLoading(true);
-
-		try {
-			const client = await getMyriaClient(isConnected);
-			const result = await getAssetsByStarkKey(client);
-			setNfts(result);
-		} catch (err: any) {
-			setErr(err.message);
-		} finally {
-			setIsLoading(false);
-			setIsLoaded(true);
-		}
-	}
 
 	const withdrawNft = async (param: any) => {
 		const client = await getMyriaClient(isConnected);
