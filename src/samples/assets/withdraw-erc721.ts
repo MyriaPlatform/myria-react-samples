@@ -1,15 +1,17 @@
 import { MyriaClient, WithdrawalModule, WithdrawNftOffChainParams } from "myria-core-sdk";
+import config from "../config";
 
 export async function withdrawErc721(client: MyriaClient, nft: any, account: string) {
 	const withdrawalModule: WithdrawalModule = new WithdrawalModule(client);
+	const starkKey = config.stark_key;
 
 	const params: WithdrawNftOffChainParams = {
 		id: nft.id,
 		tokenId: nft.tokenId,
 		tokenAddress: nft.tokenAddress,
 		senderVaultId: nft.vaultId,
-		senderPublicKey: account,
-		receiverPublicKey: "0x75e0D99fa416823F4C07CDafC86A3B0cA37B52A5",
+		senderPublicKey: starkKey,
+		receiverPublicKey: account,
 		assetId: nft.assetId,
 		quantizedAmount: nft.amount
 	}
@@ -22,6 +24,10 @@ export async function withdrawErc721(client: MyriaClient, nft: any, account: str
 		withdrawalResponse = await withdrawalModule.withdrawNftOffChain(params);
 		console.log("Withdrawal response:");
 		console.log(JSON.stringify(withdrawalResponse, null, 2));
+
+		const balance = await withdrawalModule.getWithdrawalBalance(account, nft.assetId);
+		console.log(balance);
+
 		return withdrawalResponse;
 	} catch (error) {
 		if (error instanceof Error) {
