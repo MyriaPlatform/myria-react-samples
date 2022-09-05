@@ -55,7 +55,7 @@ function AssetsView({ isConnected, account }: Props) {
 								<div key={nft.id} className="group relative">
 									<div className="min-h-72 w-fit overflow-hidden rounded-md bg-gray-200">
 										<img
-											src={nft.metadataOptional.image}
+											src={nft.imageUrl ? nft.imageUrl : "/null.png"}
 											alt={nft.name}
 											className="h-72 w-fit object-cover object-center"
 										/>
