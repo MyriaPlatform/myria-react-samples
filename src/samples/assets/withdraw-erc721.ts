@@ -1,9 +1,9 @@
-import { MyriaClient, WithdrawalModule, WithdrawNftOffChainParams } from "myria-core-sdk";
-import config from "../config";
+import { DeveloperAccountManager, MyriaClient, WithdrawalModule, WithdrawNftOffChainParams } from "myria-core-sdk";
 
 export async function withdrawErc721(client: MyriaClient, nft: any, account: string) {
 	const withdrawalModule: WithdrawalModule = new WithdrawalModule(client);
-	const starkKey = config.stark_key;
+	const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
+  const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
 
 	const params: WithdrawNftOffChainParams = {
 		id: nft.id,
@@ -22,16 +22,18 @@ export async function withdrawErc721(client: MyriaClient, nft: any, account: str
 	try {
 		console.log("Withdrawing the ERC721...");
 		withdrawalResponse = await withdrawalModule.withdrawNftOffChain(params);
-		console.log("Withdrawal response:");
-		console.log(JSON.stringify(withdrawalResponse, null, 2));
-
-		const balance = await withdrawalModule.getWithdrawalBalance(account, nft.assetId);
-		console.log(balance);
+		if(withdrawalResponse) {
+			console.log("Withdrawal response:");
+			console.log(JSON.stringify(withdrawalResponse, null, 2));
+	
+			// const balance = await withdrawalModule.getWithdrawalBalance(account, nft.assetId);
+			// console.log(balance);
+		}
 
 		return withdrawalResponse;
 	} catch (error) {
 		if (error instanceof Error) {
-			console.log(JSON.stringify(error.message, Object.getOwnPropertyNames(error.message)));
+			console.log(error.message);
 		}
 		return;
 	}
