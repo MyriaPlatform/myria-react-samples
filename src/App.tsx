@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import useMetamask from '../helpers/useMetamask';
-import AssetsView from '../views/AssetsView';
-import WalletView from '../views/WalletView';
-import Navbar from '../components/navbar';
+import useMetamask from './helpers/useMetamask';
+import AssetsView from './views/AssetsView';
+import WalletView from './views/WalletView';
+import Navbar from './components/navbar';
 import 'bootstrap/dist/css/bootstrap.css';
-import '../assets/styles.css';
+import './assets/styles.css';
 
 function App() {
   const navbarItems = [
