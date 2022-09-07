@@ -2,9 +2,30 @@ import { useEffect } from 'react';
 import useMetamask from '../helpers/useMetamask';
 import AssetsView from '../views/AssetsView';
 import WalletView from '../views/WalletView';
+import Navbar from '../components/navbar';
+import 'bootstrap/dist/css/bootstrap.css';
 import '../assets/styles.css';
 
 function App() {
+  const navbarItems = [
+    {
+      title: "Wallet",
+      url: "/"
+    },
+    {
+      title: "Assets",
+      url: "/"
+    },
+    {
+      title: "Withdrawals",
+      url: "/"
+    }
+  ];
+
+  function onConnectWallet() {
+    console.log("test");
+  }
+
   const { isConnected, checkIfMetaMaskInstalled, checkIfMetaMaskConnected, account } = useMetamask();
 
   useEffect(() => {
@@ -21,26 +42,22 @@ function App() {
       />)
   );
   const renderWalletView = (
-    !isConnected ? (
-      <h2>Wallet is not connected</h2>
-    ) : (
-      <WalletView
-        isConnected={isConnected}
-        account={account}
-      />)
+    <WalletView
+      isConnected={isConnected}
+      account={account} />
   );
 
   return (
-    <div className="container mx-auto my-4">
-      <button
-        type="button"
-        className="mr-4 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
-        onClick={checkIfMetaMaskConnected}
-      >
-        {isConnected ? "Disconnect Wallet" : "Connect Wallet"}
-      </button>
-      {renderWalletView}
-      {renderAssetsView}
+    <div>
+      <Navbar
+        title="Myria React Samples"
+        items={navbarItems}
+        onButtonClick={checkIfMetaMaskConnected}
+      />
+      <div className="container mx-auto mt-3">
+        {renderWalletView}
+        {renderAssetsView}
+      </div>
     </div>
   );
 }
