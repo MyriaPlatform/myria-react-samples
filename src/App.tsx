@@ -1,51 +1,35 @@
-import { useEffect } from 'react';
-import useMetamask from './helpers/useMetamask';
-import AssetsView from './views/AssetsView';
-import WalletView from './views/WalletView';
-import Navbar from './components/navbar';
+import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import HomeView from "./views/Main";
+import useMetamask from "./helpers/useMetamask";
+import Navbar from "./components/navbar";
+import AssetsView from "./views/Assets";
+import WithdrawalsView from "./views/Withdrawals";
+import WalletView from "./views/Wallet";
 import 'bootstrap/dist/css/bootstrap.css';
 import './assets/styles.css';
 
 function App() {
+  const { isConnected, checkIfMetaMaskInstalled, checkIfMetaMaskConnected, account } = useMetamask();
+
   const navbarItems = [
     {
       title: "Wallet",
-      url: "/"
+      url: "/wallet"
     },
     {
       title: "Assets",
-      url: "/"
+      url: "/assets"
     },
     {
       title: "Withdrawals",
-      url: "/"
+      url: "/withdrawals"
     }
   ];
-
-  function onConnectWallet() {
-    console.log("test");
-  }
-
-  const { isConnected, checkIfMetaMaskInstalled, checkIfMetaMaskConnected, account } = useMetamask();
 
   useEffect(() => {
     checkIfMetaMaskInstalled();
   }, []);
-
-  const renderAssetsView = (
-    !isConnected ? (
-      null
-    ) : (
-      <AssetsView
-        isConnected={isConnected}
-        account={account}
-      />)
-  );
-  const renderWalletView = (
-    <WalletView
-      isConnected={isConnected}
-      account={account} />
-  );
 
   return (
     <div>
@@ -53,10 +37,15 @@ function App() {
         title="Myria React Samples"
         items={navbarItems}
         onButtonClick={checkIfMetaMaskConnected}
+        buttonTitle= { isConnected ? "Wallet Connected" : "Connect Wallet" }
       />
       <div className="container mx-auto mt-3">
-        {renderWalletView}
-        {renderAssetsView}
+        <Routes>
+          <Route path="/" element={<HomeView isConnected={isConnected} account={account} />} />
+          <Route path="/wallet" element={<WalletView isConnected={isConnected} account={account} />} />
+          <Route path="/assets" element={<AssetsView isConnected={isConnected} account={account} />} />
+          <Route path="/withdrawals" element={<WithdrawalsView />} />
+        </Routes>
       </div>
     </div>
   );

@@ -3,8 +3,7 @@ type Props = {
   account: string,
 }
 
-function WalletView({ isConnected, account }: Props) {
-
+const Wallet = ({ isConnected, account }: Props) => {
   return (
     <div>
       <div className="margin-bottom--sm">
@@ -15,4 +14,4 @@ function WalletView({ isConnected, account }: Props) {
   );
 }
 
-export default WalletView;
+export default Wallet;

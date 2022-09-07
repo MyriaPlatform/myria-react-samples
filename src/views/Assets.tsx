@@ -9,7 +9,8 @@ type Props = {
 	account: string
 }
 
-function AssetsView({ account, isConnected }: Props) {
+
+const Assets = ({ isConnected, account }: Props) => {
 	const [nfts, setNfts] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -44,7 +45,7 @@ function AssetsView({ account, isConnected }: Props) {
 			{err && <code className="mt-3">{err}</code>}
 
 			{isLoading && <p>Loading assets...</p>}
-			
+
 			<div className="row align-items-start text-center mt-3">
 				{(Array.isArray(nfts) && isLoaded)
 					? nfts.map((nft: any) => (
@@ -70,4 +71,4 @@ function AssetsView({ account, isConnected }: Props) {
 	);
 }
 
-export default AssetsView;
+export default Assets;
