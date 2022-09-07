@@ -18,7 +18,7 @@ export async function getWithdrawalsList(client: MyriaClient, account: string) {
       .then((data) => {
         if (data.data) {
           withdrawals = data.data
-            .filter((item: any) => item.transactionType == "WithdrawalRequest")
+            .filter((item: any) => item.transactionType === "WithdrawalRequest")
         }
       })
     console.log(withdrawals);

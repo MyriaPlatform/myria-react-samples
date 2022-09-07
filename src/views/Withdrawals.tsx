@@ -46,7 +46,7 @@ const Withdrawals = ({ isConnected, account }: Props) => {
 								<div className="card-body">
 									<h5 className="card-title">#{item.tokenId}</h5>
 									<p className="card-text">Status: {item.transactionStatus}</p>
-									<a className="card-link"> {item.transactionStatus == "Pending" ? "" : "Finish Withdrawal"}</a>
+									<a className="card-link"> {item.transactionStatus === "Pending" ? "" : "Finish Withdrawal"}</a>
 								</div>
 								<div className="card-footer">
 									<small className="text-muted">{item.tokenType}</small>

@@ -9,7 +9,6 @@ type Props = {
 	account: string
 }
 
-
 const Assets = ({ isConnected, account }: Props) => {
 	const [nfts, setNfts] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
