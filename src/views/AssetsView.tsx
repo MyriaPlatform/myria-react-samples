@@ -43,38 +43,27 @@ function AssetsView({ account, isConnected }: Props) {
 		<div>
 			{err && <h3>{err}</h3>}
 
-			{isLoading && <h3>Loading assets...</h3>}
-
-			<div className="bg-white">
-				<div className="mx-auto lg:max-w-7xl">
-					<h2 className="sr-only">Products</h2>
-					<div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-						{(Array.isArray(nfts) && isLoaded)
-							? nfts.map((nft: any) => (
-								<div key={nft.id} className="group relative">
-									<div className="min-h-72 w-fit overflow-hidden rounded-md bg-gray-200">
-										<img
-											src={nft.imageUrl ? nft.imageUrl : "/null.png"}
-											alt={nft.name}
-											className="h-72 w-fit object-cover object-center"
-										/>
-									</div>
-									<div className="mt-4 flex">
-										<div>
-											<h3 className="text-sm text-gray-700">
-												<span className="" />
-												{nft.name}
-											</h3>
-											<button className="mt-1 text-sm text-gray-500" onClick={() => withdrawNft(nft)}>Withdraw</button>
-										</div>
-										<p className="text-sm font-medium text-gray-900">#{nft.id}</p>
-									</div>
+			{isLoading && <h4>Loading assets...</h4>}
+			<div className="row align-items-start text-center mt-3">
+				{(Array.isArray(nfts) && isLoaded)
+					? nfts.map((nft: any) => (
+						<div className="col mb-3" key={nft.id}>
+							<div className="card" key={nft.id} style={{ width: "14rem" }}>
+								<img src={nft.imageUrl ? nft.imageUrl : "/null.png"} alt={nft.name} className="card-img-top img-thumbnail" />
+								<div className="card-body">
+									<h5 className="card-title">{nft.name}</h5>
+									<p className="card-text">{nft.description}</p>
+									<a className="card-link" onClick={() => withdrawNft(nft)}>Withdraw NFT</a>
+									<a className="card-link">List NFT</a>
 								</div>
-							))
-							: (isLoaded && !(Array.isArray(nfts)) && <p>No assets available</p>)
-						}
-					</div>
-				</div>
+								<div className="card-footer">
+									<small className="text-muted">#{nft.id} | {nft.publicId}</small>
+								</div>
+							</div>
+						</div>
+					))
+					: (isLoaded && !(Array.isArray(nfts)) && <p>No assets available</p>)
+				}
 			</div>
 		</div>
 	);
