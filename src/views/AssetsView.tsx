@@ -41,9 +41,10 @@ function AssetsView({ account, isConnected }: Props) {
 
 	return (
 		<div>
-			{err && <h3>{err}</h3>}
+			{err && <code className="mt-3">{err}</code>}
 
-			{isLoading && <h4>Loading assets...</h4>}
+			{isLoading && <p>Loading assets...</p>}
+			
 			<div className="row align-items-start text-center mt-3">
 				{(Array.isArray(nfts) && isLoaded)
 					? nfts.map((nft: any) => (

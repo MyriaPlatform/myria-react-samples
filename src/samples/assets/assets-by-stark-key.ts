@@ -22,7 +22,7 @@ export async function getAssetsByStarkKey(client: MyriaClient, account: string) 
     return nfts;
   } catch (error) {
     if (error instanceof Error) {
-      console.log(JSON.stringify(error.message, Object.getOwnPropertyNames(error.message)));
+      console.log(error);
     }
     return;
   }
