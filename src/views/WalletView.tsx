@@ -8,9 +8,9 @@ function WalletView({ isConnected, account }: Props) {
   return (
     <div>
       <div className="margin-bottom--sm">
-        Status: {isConnected ? "connected" : "not connected"}
+        Wallet status: {isConnected ? "connected" : "not connected"}
       </div>
-      <div className="margin-bottom--sm">Account: {account}</div>
+      <div className="margin-bottom--sm">Wallet address: {account}</div>
     </div>
   );
 }
