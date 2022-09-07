@@ -1,4 +1,4 @@
-import { CreateOrderEntity, DeveloperAccountManager, ModuleFactory, MyriaClient, SignableOrderInput, TokenType, WithdrawalModule, WithdrawNftOffChainParams } from "myria-core-sdk";
+import { CreateOrderEntity, DeveloperAccountManager, ModuleFactory, MyriaClient, SignableOrderInput, TokenType } from "myria-core-sdk";
 
 export async function listErc721(client: MyriaClient, account: string, asset: any) {
   const moduleFactory = new ModuleFactory(client);
@@ -22,7 +22,7 @@ export async function listErc721(client: MyriaClient, account: string, asset: an
     tokenBuy: {
       type: TokenType.ETH,
       data: {
-        quantum: "1"
+        quantum: "10000000000"
       }
     },
     amountBuy: "0.001",
