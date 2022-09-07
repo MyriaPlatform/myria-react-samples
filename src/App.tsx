@@ -44,7 +44,7 @@ function App() {
           <Route path="/" element={<HomeView isConnected={isConnected} account={account} />} />
           <Route path="/wallet" element={<WalletView isConnected={isConnected} account={account} />} />
           <Route path="/assets" element={<AssetsView isConnected={isConnected} account={account} />} />
-          <Route path="/withdrawals" element={<WithdrawalsView />} />
+          <Route path="/withdrawals" element={<WithdrawalsView isConnected={isConnected} account={account} />} />
         </Routes>
       </div>
     </div>
