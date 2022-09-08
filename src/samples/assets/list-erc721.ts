@@ -1,9 +1,9 @@
-import { CreateOrderEntity, DeveloperAccountManager, ModuleFactory, MyriaClient, SignableOrderInput, TokenType } from "myria-core-sdk";
+import { CreateOrderEntity, ModuleFactory, MyriaClient, SignableOrderInput, TokenType } from "myria-core-sdk";
 
 export async function listErc721(client: MyriaClient, account: string, asset: any) {
   const moduleFactory = new ModuleFactory(client);
   const orderModule = moduleFactory.getOrderManager();
-  const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
+  const devAccountManager = moduleFactory.getDeveloperAccountManager();
   const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
 
   if (!account) return;
