@@ -2,7 +2,7 @@ import { CreateOrderEntity, ModuleFactory, MyriaClient, SignableOrderInput, Toke
 
 export async function listErc721(client: MyriaClient, account: string, asset: any) {
   const moduleFactory = new ModuleFactory(client);
-  const orderModule = moduleFactory.getOrderManager();
+  const orderManager = moduleFactory.getOrderManager();
   const devAccountManager = moduleFactory.getDeveloperAccountManager();
   const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
 
@@ -29,7 +29,7 @@ export async function listErc721(client: MyriaClient, account: string, asset: an
     includeFees: false
   };
   
-  const signature = await orderModule?.signableOrder(payload);
+  const signature = await orderManager?.signableOrder(payload);
   if (signature) {
     const paramCreateOrder: CreateOrderEntity = {
       assetRefId: parseInt(asset.id, 10),
@@ -47,7 +47,7 @@ export async function listErc721(client: MyriaClient, account: string, asset: an
     };
     console.log(paramCreateOrder);
 
-    const res = await orderModule?.createOrder(paramCreateOrder);
+    const res = await orderManager?.createOrder(paramCreateOrder);
     console.log(res);
   }
 }
