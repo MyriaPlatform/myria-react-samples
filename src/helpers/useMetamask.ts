@@ -11,7 +11,7 @@ const useMetamask = () => {
 			setIsInstalled(true);
 			return true;
 		} else {
-			alert("No MetaMask detected. Please install and proceed!");
+			console.log("No MetaMask detected. Please install and proceed!");
 			return false;
 		}
 	}
