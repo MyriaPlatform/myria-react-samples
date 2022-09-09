@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
 import { listErc721 } from '../samples/assets/list-erc721';
 import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
-import { getMyriaClient } from '../samples/common/myria-client';
 
 type Props = {
 	isConnected: boolean,
@@ -37,13 +36,11 @@ const Assets = ({ isConnected, account, starkKey, client }: Props) => {
 	}, []);
 
 	const withdrawNft = async (asset: any) => {
-		const client = await getMyriaClient(isConnected);
 		const withdrawalResult = await withdrawErc721(client, asset, account, starkKey);
 		console.log(withdrawalResult);
 	}
 
 	const listNft = async (asset: any) => {
-		const client = await getMyriaClient(isConnected);
 		const result = await listErc721(client, account, starkKey, asset);
 		console.log(result);
 	}
