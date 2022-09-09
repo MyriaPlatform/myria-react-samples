@@ -1,6 +1,5 @@
-import { IMyriaClient, MyriaClient } from "myria-core-sdk";
+import { EnvTypes, IMyriaClient, MyriaClient } from "myria-core-sdk";
 import Web3 from "web3";
-import config from "../config";
 
 async function initWeb3Instance(isConnected: boolean) {
 	if (isConnected) {
@@ -28,7 +27,7 @@ export async function getMyriaClient(isConnected: boolean) {
 		provider: web3Instance.eth.currentProvider as any,
 		networkId: networkId,
 		web3: web3Instance as any,
-		env: config.environment
+		env: EnvTypes.STAGING
 	};
 
 	const myriaClient = new MyriaClient(client);
