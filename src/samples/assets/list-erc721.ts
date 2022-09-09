@@ -1,10 +1,8 @@
 import { CreateOrderEntity, ModuleFactory, MyriaClient, SignableOrderInput, TokenType } from "myria-core-sdk";
 
-export async function listErc721(client: MyriaClient, account: string, asset: any) {
+export async function listErc721(client: MyriaClient, account: string, starkKey: string, asset: any) {
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
-  const devAccountManager = moduleFactory.getDeveloperAccountManager();
-  const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
 
   if (!account) return;
   const payload: SignableOrderInput = {

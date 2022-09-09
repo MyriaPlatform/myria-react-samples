@@ -3,13 +3,16 @@ import WalletView from './Wallet';
 type Props = {
   isConnected: boolean,
   account: string,
+  starkKey: string
 }
 
-const Main = ({ isConnected, account }: Props) => {
+const Main = ({ isConnected, account, starkKey }: Props) => {
   const renderWalletView = (
     <WalletView
       isConnected={isConnected}
-      account={account} />
+      account={account}
+      starkKey={starkKey}
+    />
   );
 
   return (

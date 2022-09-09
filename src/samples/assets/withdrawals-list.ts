@@ -1,12 +1,6 @@
-import {
-  DeveloperAccountManager,
-  MyriaClient,
-  TransactionManager
-} from "myria-core-sdk";
+import { MyriaClient, TransactionManager } from "myria-core-sdk";
 
-export async function getWithdrawalsList(client: MyriaClient, account: string) {
-  const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
-  const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
+export async function getWithdrawalsList(client: MyriaClient, starkKey: string) {
   const trxManager: TransactionManager = new TransactionManager(client);
 
   let withdrawals;

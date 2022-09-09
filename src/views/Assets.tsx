@@ -6,10 +6,11 @@ import { getMyriaClient } from '../samples/common/myria-client';
 
 type Props = {
 	isConnected: boolean,
-	account: string
+	account: string,
+	starkKey: string
 }
 
-const Assets = ({ isConnected, account }: Props) => {
+const Assets = ({ isConnected, account, starkKey }: Props) => {
 	const [assets, setAssets] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -21,7 +22,7 @@ const Assets = ({ isConnected, account }: Props) => {
 				setIsLoading(true);
 				try {
 					const client = await getMyriaClient(isConnected);
-					const result = await getAssetsByStarkKey(client, account);
+					const result = await getAssetsByStarkKey(client, starkKey);
 					setAssets(result);
 				} catch (err: any) {
 					setErr(err.message);
@@ -36,13 +37,13 @@ const Assets = ({ isConnected, account }: Props) => {
 
 	const withdrawNft = async (asset: any) => {
 		const client = await getMyriaClient(isConnected);
-		const withdrawalResult = await withdrawErc721(client, asset, account);
+		const withdrawalResult = await withdrawErc721(client, asset, account, starkKey);
 		console.log(withdrawalResult);
 	}
 
 	const listNft = async (asset: any) => {
 		const client = await getMyriaClient(isConnected);
-		const result = await listErc721(client, account, asset);
+		const result = await listErc721(client, account, starkKey, asset);
 		console.log(result);
 	}
 

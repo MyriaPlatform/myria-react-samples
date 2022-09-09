@@ -1,9 +1,7 @@
-import { DeveloperAccountManager, MyriaClient, TokenType, WithdrawalModule, WithdrawAndMintParams } from "myria-core-sdk";
+import { MyriaClient, TokenType, WithdrawalModule, WithdrawAndMintParams } from "myria-core-sdk";
 
-export async function completeErc721Withdrawal(client: MyriaClient, nft: any, account: string) {
+export async function completeErc721Withdrawal(client: MyriaClient, nft: any, account: string, starkKey: string) {
   const withdrawalModule: WithdrawalModule = new WithdrawalModule(client);
-  const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
-  const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
 
   const params: WithdrawAndMintParams = {
     starkKey: starkKey,
