@@ -6,12 +6,23 @@ type Props = {
 
 const Wallet = ({ isConnected, account, starkKey }: Props) => {
   return (
-    <div>
-      <div className="margin-bottom--sm">
-        Wallet status: {isConnected ? "connected" : "not connected"}
-      </div>
-      <div className="margin-bottom--sm">Wallet address: {account}</div>
-      <div>Stark Key: {starkKey}</div>
+    <div className="table-responsive">
+      <table className="table">
+        <tbody>
+          <tr>
+            <td>Wallet Status</td>
+            <td>{isConnected ? "connected" : "not connected"}</td>
+          </tr>
+          <tr>
+            <td>Wallet Address</td>
+            <td>{account}</td>
+          </tr>
+          <tr>
+            <td>Stark Key</td>
+            <td>{starkKey}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

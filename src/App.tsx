@@ -41,9 +41,10 @@ function App() {
             try {
               const client = await getMyriaClient(isConnected);
               setClient(client);
+
               const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
-              const accManager = await devAccountManager.getUserByWalletAddress(account);
-              setStarkKey(accManager.starkKey);
+              const starkKey = (await devAccountManager.getUserByWalletAddress(account)).starkKey;
+              setStarkKey(starkKey);
             } catch (err: any) {
               console.log(err);
             }
