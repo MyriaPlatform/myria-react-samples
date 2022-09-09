@@ -15,6 +15,7 @@ import "./assets/styles.css";
 function App() {
   const { isInstalled, isConnected, checkIfMetaMaskInstalled, checkIfMetaMaskConnected, account } = useMetamask();
   const [starkKey, setStarkKey] = useState("0x");
+  const [client, setClient] = useState(null);
 
   const navbarItems = [
     {
@@ -39,6 +40,7 @@ function App() {
           const setKey = async () => {
             try {
               const client = await getMyriaClient(isConnected);
+              setClient(client);
               const devAccountManager: DeveloperAccountManager = new DeveloperAccountManager(client);
               const accManager = await devAccountManager.getUserByWalletAddress(account);
               setStarkKey(accManager.starkKey);
@@ -64,8 +66,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeView isConnected={isConnected} account={account} starkKey={starkKey} />} />
           <Route path="/wallet" element={<WalletView isConnected={isConnected} account={account} starkKey={starkKey} />} />
-          <Route path="/assets" element={<AssetsView isConnected={isConnected} account={account} starkKey={starkKey} />} />
-          <Route path="/withdrawals" element={<WithdrawalsView isConnected={isConnected} account={account} starkKey={starkKey} />} />
+          <Route path="/assets" element={<AssetsView isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/withdrawals" element={<WithdrawalsView isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
         </Routes>
       </div>
     </div>

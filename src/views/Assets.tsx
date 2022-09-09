@@ -1,3 +1,4 @@
+import { MyriaClient } from 'myria-core-sdk';
 import { useEffect, useState } from 'react';
 import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
 import { listErc721 } from '../samples/assets/list-erc721';
@@ -7,10 +8,11 @@ import { getMyriaClient } from '../samples/common/myria-client';
 type Props = {
 	isConnected: boolean,
 	account: string,
-	starkKey: string
+	starkKey: string,
+	client: MyriaClient
 }
 
-const Assets = ({ isConnected, account, starkKey }: Props) => {
+const Assets = ({ isConnected, account, starkKey, client }: Props) => {
 	const [assets, setAssets] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -21,7 +23,6 @@ const Assets = ({ isConnected, account, starkKey }: Props) => {
 			const getNfts = async () => {
 				setIsLoading(true);
 				try {
-					const client = await getMyriaClient(isConnected);
 					const result = await getAssetsByStarkKey(client, starkKey);
 					setAssets(result);
 				} catch (err: any) {
