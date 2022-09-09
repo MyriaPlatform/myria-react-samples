@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from "react";
+import { completeErc721Withdrawal } from '../samples/assets/withdrawal-complete';
 import { getWithdrawalsList } from '../samples/assets/withdrawals-list';
 import { getMyriaClient } from '../samples/common/myria-client';
 
@@ -13,6 +14,12 @@ const Withdrawals = ({ isConnected, account }: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
+
+	const completeWithdrawal = async (asset: any) => {
+		const client = await getMyriaClient(isConnected);
+		const result = await completeErc721Withdrawal(client, account, asset);
+		console.log(result);
+	}
 
 	useEffect(() => {
 		if (isConnected) {
@@ -49,7 +56,10 @@ const Withdrawals = ({ isConnected, account }: Props) => {
 								<div className="card-body">
 									<h5 className="card-title">#{item.tokenId}</h5>
 									<p className="card-text">Status: {item.transactionStatus}</p>
-									<a className="card-link"> {item.transactionStatus === "Pending" ? "" : "Finish Withdrawal"}</a>
+									{
+										(item.transactionStatus === "Pending") ? "" :
+											<a className="card-link" onClick={() => completeWithdrawal(item)}>Complete Withdrawal</a>
+									}
 								</div>
 								<div className="card-footer">
 									<small className="text-muted">{item.tokenType}</small>
