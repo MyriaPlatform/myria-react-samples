@@ -15,26 +15,29 @@ const Withdrawals = ({ isConnected, account }: Props) => {
 	const [err, setErr] = useState('');
 
 	useEffect(() => {
-		const getWithdrawals = async () => {
-			setIsLoading(true);
-			try {
-				const client = await getMyriaClient(isConnected);
-				const result = await getWithdrawalsList(client, account);
-				setWithdrawals(result);
-			} catch (err: any) {
-				setErr(err.message);
-			} finally {
-				setIsLoading(false);
-				setIsLoaded(true);
+		if (isConnected) {
+			const getWithdrawals = async () => {
+				setIsLoading(true);
+				try {
+					const client = await getMyriaClient(isConnected);
+					const result = await getWithdrawalsList(client, account);
+					setWithdrawals(result);
+				} catch (err: any) {
+					setErr(err.message);
+				} finally {
+					setIsLoading(false);
+					setIsLoaded(true);
+				}
 			}
+			getWithdrawals();
 		}
-
-		getWithdrawals();
 	}, []);
 
 	return (
 		<div>
 			{err && <code className="mt-3">{err}</code>}
+
+			{!isConnected && <p>Please connect your wallet first!</p>}
 
 			{isLoading && <p>Loading...</p>}
 

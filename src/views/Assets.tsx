@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 import { getAssetsByStarkKey } from "../samples/assets/assets-by-stark-key";
 import { listErc721 } from '../samples/assets/list-erc721';
 import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
@@ -17,21 +16,22 @@ const Assets = ({ isConnected, account }: Props) => {
 	const [err, setErr] = useState('');
 
 	useEffect(() => {
-		const getNfts = async () => {
-			setIsLoading(true);
-			try {
-				const client = await getMyriaClient(isConnected);
-				const result = await getAssetsByStarkKey(client, account);
-				setAssets(result);
-			} catch (err: any) {
-				setErr(err.message);
-			} finally {
-				setIsLoading(false);
-				setIsLoaded(true);
+		if(isConnected) {
+			const getNfts = async () => {
+				setIsLoading(true);
+				try {
+					const client = await getMyriaClient(isConnected);
+					const result = await getAssetsByStarkKey(client, account);
+					setAssets(result);
+				} catch (err: any) {
+					setErr(err.message);
+				} finally {
+					setIsLoading(false);
+					setIsLoaded(true);
+				}
 			}
+			getNfts();
 		}
-
-		getNfts();
 	}, []);
 
 	const withdrawNft = async (asset: any) => {
@@ -49,6 +49,8 @@ const Assets = ({ isConnected, account }: Props) => {
 	return (
 		<div>
 			{err && <code className="mt-3">{err}</code>}
+
+			{!isConnected && <p>Please connect your wallet first!</p>}
 
 			{isLoading && <p>Loading assets...</p>}
 
