@@ -6,8 +6,9 @@ import Navbar from "./components/navbar";
 import AssetsView from "./views/Assets";
 import WithdrawalsView from "./views/Withdrawals";
 import WalletView from "./views/Wallet";
-import 'bootstrap/dist/css/bootstrap.css';
-import './assets/styles.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle";
+import "./assets/styles.css";
 
 function App() {
   const { isConnected, checkIfMetaMaskInstalled, checkIfMetaMaskConnected, account } = useMetamask();
