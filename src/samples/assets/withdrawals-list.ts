@@ -12,7 +12,7 @@ export async function getWithdrawalsList(client: MyriaClient, starkKey: string) 
       .then((data) => {
         if (data.data) {
           withdrawals = data.data
-            .filter((item: any) => item.transactionType === "WithdrawalRequest")
+            .filter((item: any) => item.transactionType === "WithdrawalRequest" && item.transactionStatus === "Success")
         }
       })
     console.log(withdrawals);
