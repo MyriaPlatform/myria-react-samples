@@ -3,6 +3,7 @@ import { CreateOrderEntity, ModuleFactory, MyriaClient, SignableOrderInput, Toke
 export async function listErc721(client: MyriaClient, account: string, starkKey: string, asset: any) {
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
+  const ASSET_PRICE = "0.001";
 
   if (!account) return;
   const payload: SignableOrderInput = {
@@ -23,7 +24,7 @@ export async function listErc721(client: MyriaClient, account: string, starkKey:
         quantum: "10000000000"
       }
     },
-    amountBuy: "0.001",
+    amountBuy: ASSET_PRICE,
     includeFees: false
   };
   
