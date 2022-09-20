@@ -1,0 +1,29 @@
+/* body {
+  background: #040b10;
+} */
+.navbar-dark {
+  background: #081824 !important;
+}
+
+.nav-item {
+  padding: 13px 9px;
+}
+
+a.nav-link {
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  background: #0b2231;
+  border-radius: 8px;
+  color: #9ac9e3;
+}
+
+.btn-mry,
+.btn-mry:hover {
+  border: 1px solid rgb(11 34 49/1);
+  border-radius: 0.5rem;
+  background: #040b10;
+  color: #fff;
+  padding: 10px 18px;
+}

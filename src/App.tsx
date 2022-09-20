@@ -61,7 +61,7 @@ function App() {
         title="Myria React Samples"
         items={navbarItems}
         onButtonClick={checkIfMetaMaskConnected}
-        buttonTitle={isConnected ? "Wallet Connected" : "Connect Wallet"}
+        buttonTitle={isConnected ? (`${account.slice(0, 5)}...${account.slice(38, 42)}`) : "Connect Wallet"}
       />
       <div className="container mx-auto mt-3">
         <Routes>
