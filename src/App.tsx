@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import HomeView from "./views/Main";
+import Home from "./views/Main";
 import useMetamask from "./helpers/useMetamask";
 import Navbar from "./components/navbar";
-import AssetsView from "./views/Assets";
-import WithdrawalsView from "./views/Withdrawals";
-import WalletView from "./views/Wallet";
+import MyriaNfts from "./views/MyriaNfts";
+import EthNfts from "./views/EthNfts";
+import NftWithdrawals from "./views/NftWithdrawals";
+import Wallet from "./views/Wallet";
 import { DeveloperAccountManager } from "myria-core-sdk";
 import { getMyriaClient } from "./samples/common/myria-client";
 import "bootstrap/dist/css/bootstrap.css";
@@ -23,13 +24,17 @@ function App() {
       url: "/wallet"
     },
     {
-      title: "Assets",
-      url: "/assets"
+      title: "Myria L2 Assets",
+      url: "/myria-nfts"
+    },
+    {
+      title: "Ethereum L1 assets",
+      url: "/eth-nfts"
     },
     {
       title: "Withdrawals",
       url: "/withdrawals"
-    }
+    },
   ];
 
   useEffect(() => {
@@ -65,10 +70,11 @@ function App() {
       />
       <div className="container mx-auto mt-3">
         <Routes>
-          <Route path="/" element={<HomeView isConnected={isConnected} account={account} starkKey={starkKey} />} />
-          <Route path="/wallet" element={<WalletView isConnected={isConnected} account={account} starkKey={starkKey} />} />
-          <Route path="/assets" element={<AssetsView isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
-          <Route path="/withdrawals" element={<WithdrawalsView isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/" element={<Home isConnected={isConnected} account={account} starkKey={starkKey} />} />
+          <Route path="/wallet" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} />} />
+          <Route path="/myria-nfts" element={<MyriaNfts isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/eth-nfts" element={<EthNfts isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/withdrawals" element={<NftWithdrawals isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
         </Routes>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect } from 'react';
 import { useState } from "react";
-import { completeErc721Withdrawal } from '../samples/assets/withdrawal-complete';
-import { getWithdrawalsList } from '../samples/assets/withdrawals-list';
+import { completeErc721Withdrawal } from '../samples/nfts/complete-nft-withdrawal';
+import { getWithdrawalsList } from '../samples/nfts/get-withdrawals-list';
 
 type Props = {
 	isConnected: boolean,
@@ -11,7 +11,7 @@ type Props = {
 	client: MyriaClient
 }
 
-const Withdrawals = ({ isConnected, account, starkKey, client }: Props) => {
+const NftWithdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 	const [withdrawals, setWithdrawals] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -74,4 +74,4 @@ const Withdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 	);
 }
 
-export default Withdrawals;
+export default NftWithdrawals;
