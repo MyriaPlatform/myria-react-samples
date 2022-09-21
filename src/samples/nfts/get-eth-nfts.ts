@@ -1,8 +1,9 @@
 import { Alchemy, Network } from "alchemy-sdk";
 
 export async function getEthNfts(account: string) {
+  // this is a test api key, replace it with yours
   const config = {
-    apiKey: "ALCHEMY_KEY",
+    apiKey: "kmzrSbbtp1TmmGpJ3WvlQbOKjihk4rLF",
     network: Network.ETH_GOERLI,
   };
   const alchemy = new Alchemy(config);
