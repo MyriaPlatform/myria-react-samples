@@ -62,8 +62,8 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 								<div className="card-body">
 									<h5 className="card-title">{asset.name}</h5>
 									<p className="card-text">{asset.description}</p>
-									<a className="card-link" onClick={() => withdrawNft(asset)}>Withdraw NFT</a>
-									<a className="card-link" onClick={() => listNft(asset)}>List NFT</a>
+									<p className="card-link" onClick={() => withdrawNft(asset)}>Withdraw NFT</p>
+									<p className="card-link" onClick={() => listNft(asset)}>List NFT</p>
 								</div>
 								<div className="card-footer">
 									<small className="text-muted">#{asset.id} | {asset.publicId}</small>

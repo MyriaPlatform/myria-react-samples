@@ -57,7 +57,7 @@ const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
 									<p className="card-text">{asset.contract.address}</p>
 									{
 										(asset.transactionStatus === "Pending") ? "" :
-											<a className="card-link" onClick={() => depositNft(asset)}>Deposit to Myria</a>
+											<p className="card-link" onClick={() => depositNft(asset)}>Deposit to Myria</p>
 									}
 								</div>
 								<div className="card-footer">

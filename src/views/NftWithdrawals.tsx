@@ -58,7 +58,7 @@ const NftWithdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 									<p className="card-text">Status: {item.transactionStatus}</p>
 									{
 										(item.transactionStatus === "Pending") ? "" :
-											<a className="card-link" onClick={() => completeWithdrawal(item)}>Complete Withdrawal</a>
+											<p className="card-link" onClick={() => completeWithdrawal(item)}>Complete Withdrawal</p>
 									}
 								</div>
 								<div className="card-footer">

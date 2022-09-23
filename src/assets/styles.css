@@ -43,3 +43,11 @@ a.nav-link {
   border: none;
   border-radius: 0;
 }
+.card-link {
+  color: #9ac9e3;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
