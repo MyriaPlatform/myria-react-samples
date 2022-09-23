@@ -57,7 +57,7 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 				{(Array.isArray(assets) && isLoaded)
 					? assets.map((asset: any) => (
 						<div className="col mb-3" key={asset.id}>
-							<div className="card" key={asset.id} style={{ width: "14rem" }}>
+							<div className="card mry-card" key={asset.id} style={{ width: "14rem" }}>
 								<img src={asset.imageUrl ? asset.imageUrl : "/null.png"} alt={asset.name} className="card-img-top img-thumbnail" />
 								<div className="card-body">
 									<h5 className="card-title">{asset.name}</h5>

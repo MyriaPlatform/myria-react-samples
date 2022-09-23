@@ -52,7 +52,7 @@ const NftWithdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 				{(Array.isArray(withdrawals) && isLoaded)
 					? withdrawals.map((item: any) => (
 						<div className="col mb-3" key={item.assetId}>
-							<div className="card" style={{ width: "14rem" }}>
+							<div className="card mry-card" style={{ width: "14rem" }}>
 								<div className="card-body">
 									<h5 className="card-title">#{item.tokenId}</h5>
 									<p className="card-text">Status: {item.transactionStatus}</p>

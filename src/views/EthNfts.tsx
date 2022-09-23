@@ -51,7 +51,7 @@ const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
 				{(Array.isArray(assets) && isLoaded)
 					? assets.map((asset: any) => (
 						<div className="col mb-3" key={asset.tokenId}>
-							<div className="card" style={{ width: "16rem" }}>
+							<div className="card mry-card" style={{ width: "16rem" }}>
 								<div className="card-body">
 									<h5 className="card-title">#{asset.tokenId}</h5>
 									<p className="card-text">{asset.contract.address}</p>
