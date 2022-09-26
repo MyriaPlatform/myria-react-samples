@@ -18,7 +18,7 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 	const [err, setErr] = useState('');
 
 	useEffect(() => {
-		if(isConnected) {
+		if (isConnected) {
 			const getNfts = async () => {
 				setIsLoading(true);
 				try {
@@ -36,13 +36,11 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 	}, []);
 
 	const withdrawNft = async (asset: any) => {
-		const withdrawalResult = await withdrawErc721(client, asset, account, starkKey);
-		console.log(withdrawalResult);
+		return await withdrawErc721(client, asset, account, starkKey);
 	}
 
 	const listNft = async (asset: any) => {
-		const result = await listErc721(client, account, starkKey, asset);
-		console.log(result);
+		return await listErc721(client, account, starkKey, asset);
 	}
 
 	return (
@@ -63,7 +61,7 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 									<h5 className="card-title">{asset.name}</h5>
 									<p className="card-text">{asset.description}</p>
 									<p className="card-link" onClick={() => withdrawNft(asset)}>Withdraw NFT</p>
-									<p className="card-link" onClick={() => listNft(asset)}>List NFT</p>
+									<p className="card-link" onClick={() => listNft(asset.id)}>List NFT</p>
 								</div>
 								<div className="card-footer">
 									<small className="text-muted">#{asset.id} | {asset.publicId}</small>
