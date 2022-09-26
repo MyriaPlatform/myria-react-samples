@@ -1,8 +1,8 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect, useState } from 'react';
-import { getMyriaNftsByStarkKey } from "../samples/nfts/get-myria-nfts";
-import { listErc721 } from '../samples/nfts/list-nft';
-import { withdrawErc721 } from "../samples/nfts/withdraw-nft";
+import { getMyriaErc721ByStarkKey } from "../samples/assets/get-myria-erc721";
+import { listErc721 } from '../samples/assets/list-erc721';
+import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
 
 type Props = {
 	isConnected: boolean,
@@ -11,7 +11,7 @@ type Props = {
 	client: MyriaClient
 }
 
-const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
+const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 	const [assets, setAssets] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -22,7 +22,7 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 			const getNfts = async () => {
 				setIsLoading(true);
 				try {
-					const result = await getMyriaNftsByStarkKey(client, starkKey);
+					const result = await getMyriaErc721ByStarkKey(client, starkKey);
 					setAssets(result);
 				} catch (err: any) {
 					setErr(err.message);
@@ -35,11 +35,11 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 		}
 	}, []);
 
-	const withdrawNft = async (asset: any) => {
+	const onWithdraw = async (asset: any) => {
 		return await withdrawErc721(client, asset, account, starkKey);
 	}
 
-	const listNft = async (asset: any) => {
+	const onList = async (asset: any) => {
 		return await listErc721(client, account, starkKey, asset);
 	}
 
@@ -60,8 +60,8 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 								<div className="card-body">
 									<h5 className="card-title">{asset.name}</h5>
 									<p className="card-text">{asset.description}</p>
-									<p className="card-link" onClick={() => withdrawNft(asset)}>Withdraw NFT</p>
-									<p className="card-link" onClick={() => listNft(asset.id)}>List NFT</p>
+									<p className="card-link" onClick={() => onWithdraw(asset)}>Withdraw NFT</p>
+									<p className="card-link" onClick={() => onList(asset.id)}>List NFT</p>
 								</div>
 								<div className="card-footer">
 									<small className="text-muted">#{asset.id} | {asset.publicId}</small>
@@ -76,4 +76,4 @@ const MyriaNfts = ({ isConnected, account, starkKey, client }: Props) => {
 	);
 }
 
-export default MyriaNfts;
+export default MyriaAssets;

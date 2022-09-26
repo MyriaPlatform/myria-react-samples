@@ -1,6 +1,6 @@
 import { CreateOrderEntity, FeeType, ModuleFactory, MyriaClient, SignableOrderInput, TokenType } from "myria-core-sdk";
 
-export async function listErc721(client: MyriaClient, account: string, starkKey: string, assetId: any) {
+export async function listErc721(client: MyriaClient, account: string, starkKey: string, assetId: string) {
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
   const assetManager = moduleFactory.getAssetOnchainManager();

@@ -1,17 +1,17 @@
 import { MyriaClient, WithdrawalModule, WithdrawNftOffChainParams } from "myria-core-sdk";
 
-export async function withdrawErc721(client: MyriaClient, nft: any, account: string, starkKey: string) {
+export async function withdrawErc721(client: MyriaClient, asset: any, account: string, starkKey: string) {
 	const withdrawalModule: WithdrawalModule = new WithdrawalModule(client);
 
 	const params: WithdrawNftOffChainParams = {
-		id: nft.id,
-		tokenId: nft.tokenId,
-		tokenAddress: nft.tokenAddress,
-		senderVaultId: nft.vaultId,
+		id: asset.id,
+		tokenId: asset.tokenId,
+		tokenAddress: asset.tokenAddress,
+		senderVaultId: asset.vaultId,
 		senderPublicKey: starkKey,
 		receiverPublicKey: account,
-		assetId: nft.assetId,
-		quantizedAmount: nft.amount
+		assetId: asset.assetId,
+		quantizedAmount: asset.amount
 	}
 
 	console.log(params);

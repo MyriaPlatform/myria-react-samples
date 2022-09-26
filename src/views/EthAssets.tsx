@@ -1,7 +1,7 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect, useState } from 'react';
-import { depositErc721 } from '../samples/nfts/deposit-nft';
-import { getEthNfts } from "../samples/nfts/get-eth-nfts";
+import { depositErc721 } from '../samples/assets/deposit-erc721';
+import { getEthErc721 } from "../samples/assets/get-eth-erc721";
 
 type Props = {
 	isConnected: boolean,
@@ -10,7 +10,7 @@ type Props = {
 	client: MyriaClient
 }
 
-const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
+const EthAssets = ({ isConnected, account, client, starkKey }: Props) => {
 	const [assets, setAssets] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -21,7 +21,7 @@ const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
 			const getAssets = async () => {
 				setIsLoading(true);
 				try {
-					const result = await getEthNfts(account);
+					const result = await getEthErc721(account);
 					setAssets(result);
 				} catch (err: any) {
 					setErr(err.message);
@@ -34,7 +34,7 @@ const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
 		}
 	}, []);
 
-	const depositNft = async (asset: any) => {
+	const onDeposit = async (asset: any) => {
 		const depositResult = await depositErc721(client, starkKey, asset.contract.address, asset.tokenId);
 		console.log(depositResult);
 	}
@@ -57,7 +57,7 @@ const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
 									<p className="card-text">{asset.contract.address}</p>
 									{
 										(asset.transactionStatus === "Pending") ? "" :
-											<p className="card-link" onClick={() => depositNft(asset)}>Deposit to Myria</p>
+											<p className="card-link" onClick={() => onDeposit(asset)}>Deposit to Myria</p>
 									}
 								</div>
 								<div className="card-footer">
@@ -73,4 +73,4 @@ const EthNfts = ({ isConnected, account, client, starkKey }: Props) => {
 	);
 }
 
-export default EthNfts;
+export default EthAssets;

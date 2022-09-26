@@ -1,6 +1,6 @@
 import { Alchemy, Network } from "alchemy-sdk";
 
-export async function getEthNfts(account: string) {
+export async function getEthErc721(account: string) {
   // this is a test api key, replace it with yours
   const config = {
     apiKey: "kmzrSbbtp1TmmGpJ3WvlQbOKjihk4rLF",
@@ -8,14 +8,14 @@ export async function getEthNfts(account: string) {
   };
   const alchemy = new Alchemy(config);
 
-  let nfts;
+  let assets;
   try {
     console.log(
       `Retrieving a list of assets...`
     );
-    nfts = (await alchemy.nft.getNftsForOwner(account)).ownedNfts;
-    console.log(nfts);
-    return nfts;
+    assets = (await alchemy.nft.getNftsForOwner(account)).ownedNfts;
+    console.log(assets);
+    return assets;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error);

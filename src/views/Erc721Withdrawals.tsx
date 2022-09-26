@@ -1,8 +1,8 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect } from 'react';
 import { useState } from "react";
-import { completeErc721Withdrawal } from '../samples/nfts/complete-nft-withdrawal';
-import { getWithdrawalsList } from '../samples/nfts/get-withdrawals-list';
+import { completeErc721Withdrawal } from '../samples/assets/complete-erc721-withdrawal';
+import { getWithdrawalsList } from '../samples/assets/get-withdrawals-list';
 
 type Props = {
 	isConnected: boolean,
@@ -11,13 +11,13 @@ type Props = {
 	client: MyriaClient
 }
 
-const NftWithdrawals = ({ isConnected, account, starkKey, client }: Props) => {
+const Erc721Withdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 	const [withdrawals, setWithdrawals] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
 
-	const completeWithdrawal = async (asset: any) => {
+	const onCompleteWithdrawal = async (asset: any) => {
 		const result = await completeErc721Withdrawal(client, account, asset, starkKey);
 		console.log(result);
 	}
@@ -58,7 +58,7 @@ const NftWithdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 									<p className="card-text">Status: {item.transactionStatus}</p>
 									{
 										(item.transactionStatus === "Pending") ? "" :
-											<p className="card-link" onClick={() => completeWithdrawal(item)}>Complete Withdrawal</p>
+											<p className="card-link" onClick={() => onCompleteWithdrawal(item)}>Complete Withdrawal</p>
 									}
 								</div>
 								<div className="card-footer">
@@ -74,4 +74,4 @@ const NftWithdrawals = ({ isConnected, account, starkKey, client }: Props) => {
 	);
 }
 
-export default NftWithdrawals;
+export default Erc721Withdrawals;

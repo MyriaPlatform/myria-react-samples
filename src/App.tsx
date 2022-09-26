@@ -3,9 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./views/Main";
 import useMetamask from "./helpers/useMetamask";
 import Navbar from "./components/navbar";
-import MyriaNfts from "./views/MyriaNfts";
-import EthNfts from "./views/EthNfts";
-import NftWithdrawals from "./views/NftWithdrawals";
+import MyriaAssets from "./views/MyriaAssets";
+import EthAssets from "./views/EthAssets";
+import Erc721Withdrawals from "./views/Erc721Withdrawals";
 import Wallet from "./views/Wallet";
 import { DeveloperAccountManager } from "myria-core-sdk";
 import { getMyriaClient } from "./samples/common/myria-client";
@@ -25,11 +25,11 @@ function App() {
     },
     {
       title: "Myria L2 Assets",
-      url: "/myria-nfts"
+      url: "/myria-assets"
     },
     {
       title: "Ethereum L1 assets",
-      url: "/eth-nfts"
+      url: "/eth-assets"
     },
     {
       title: "Withdrawals",
@@ -72,9 +72,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home isConnected={isConnected} account={account} starkKey={starkKey} />} />
           <Route path="/wallet" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} />} />
-          <Route path="/myria-nfts" element={<MyriaNfts isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
-          <Route path="/eth-nfts" element={<EthNfts isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
-          <Route path="/withdrawals" element={<NftWithdrawals isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/myria-assets" element={<MyriaAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/eth-assets" element={<EthAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/withdrawals" element={<Erc721Withdrawals isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
         </Routes>
       </div>
     </div>
