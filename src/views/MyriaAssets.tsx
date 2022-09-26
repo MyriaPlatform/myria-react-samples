@@ -19,7 +19,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
 	useEffect(() => {
 		if (isConnected) {
-			const getNfts = async () => {
+			const getErc721 = async () => {
 				setIsLoading(true);
 				try {
 					const result = await getMyriaErc721ByStarkKey(client, starkKey);
@@ -31,7 +31,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 					setIsLoaded(true);
 				}
 			}
-			getNfts();
+			getErc721();
 		}
 	}, []);
 
