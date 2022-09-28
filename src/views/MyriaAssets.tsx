@@ -1,5 +1,6 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect, useState } from 'react';
+import ImageCard from '../components/ImageCard';
 import { getMyriaErc721ByStarkKey } from "../samples/assets/get-myria-erc721";
 import { listErc721 } from '../samples/assets/list-erc721';
 import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
@@ -55,18 +56,14 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 				{(assets && Array.isArray(assets) && isLoaded)
 					? assets.map((asset: any) => (
 						<div className="col mb-3" key={asset.id}>
-							<div className="card mry-card" key={asset.id} style={{ width: "14rem" }}>
-								<img src={asset.imageUrl ? asset.imageUrl : "/null.png"} alt={asset.name} className="card-img-top img-thumbnail" />
-								<div className="card-body">
-									<h5 className="card-title">{asset.name}</h5>
-									<p className="card-text">{asset.description}</p>
-									<p className="card-link" onClick={() => onWithdraw(asset)}>Withdraw NFT</p>
-									<p className="card-link" onClick={() => onList(asset.id)}>List NFT</p>
-								</div>
-								<div className="card-footer">
-									<small className="text-muted">#{asset.id} | {asset.publicId}</small>
-								</div>
-							</div>
+							<ImageCard 
+								item={asset}
+								onButtonClick1={() => onWithdraw(asset)}
+								buttonTitle1="Withdraw NFT"
+								onButtonClick2={() => onList(asset.id)}
+								buttonTitle2="List NFT"
+								title={asset.name}
+							/>
 						</div>
 					))
 					: (isLoaded && !(Array.isArray(assets)) && <p>No assets available</p>)

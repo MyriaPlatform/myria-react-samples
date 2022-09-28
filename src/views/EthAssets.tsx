@@ -1,5 +1,6 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect, useState } from 'react';
+import TextCard from '../components/TextCard';
 import { depositErc721 } from '../samples/assets/deposit-erc721';
 import { getEthErc721 } from "../samples/assets/get-eth-erc721";
 
@@ -51,19 +52,14 @@ const EthAssets = ({ isConnected, account, client, starkKey }: Props) => {
 				{(Array.isArray(assets) && isLoaded)
 					? assets.map((asset: any) => (
 						<div className="col mb-3" key={asset.tokenId}>
-							<div className="card mry-card" style={{ width: "16rem" }}>
-								<div className="card-body">
-									<h5 className="card-title">#{asset.tokenId}</h5>
-									<p className="card-text">{asset.contract.address}</p>
-									{
-										(asset.transactionStatus === "Pending") ? "" :
-											<p className="card-link" onClick={() => onDeposit(asset)}>Deposit to Myria</p>
-									}
-								</div>
-								<div className="card-footer">
-									<small className="text-muted">{asset.tokenType}</small>
-								</div>
-							</div>
+							<TextCard
+								item={asset}
+								onButtonClick1={() => onDeposit(asset)}
+								buttonTitle1="Deposit to Myria"
+								title={`#${asset.tokenId}`}
+								body={asset.contract.address}
+								footer={asset.tokenType}
+							/>
 						</div>
 					))
 					: (isLoaded && (!assets.length) && <p>No assets available</p>)

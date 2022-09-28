@@ -1,6 +1,7 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect } from 'react';
 import { useState } from "react";
+import TextCard from '../components/TextCard';
 import { completeErc721Withdrawal } from '../samples/assets/complete-erc721-withdrawal';
 import { getWithdrawalsList } from '../samples/assets/get-withdrawals-list';
 
@@ -52,19 +53,14 @@ const Erc721Withdrawals = ({ isConnected, account, starkKey, client }: Props) =>
 				{(Array.isArray(withdrawals) && isLoaded)
 					? withdrawals.map((item: any) => (
 						<div className="col mb-3" key={item.assetId}>
-							<div className="card mry-card" style={{ width: "14rem" }}>
-								<div className="card-body">
-									<h5 className="card-title">#{item.tokenId}</h5>
-									<p className="card-text">Status: {item.transactionStatus}</p>
-									{
-										(item.transactionStatus === "Pending") ? "" :
-											<p className="card-link" onClick={() => onCompleteWithdrawal(item)}>Complete Withdrawal</p>
-									}
-								</div>
-								<div className="card-footer">
-									<small className="text-muted">{item.tokenType}</small>
-								</div>
-							</div>
+							<TextCard
+								item={item}
+								onButtonClick1={() => onCompleteWithdrawal(item)}
+								buttonTitle1="Complete Withdrawal"
+								title={`#${item.tokenId}`}
+								body={`Status: ${item.transactionStatus}`}
+								footer={`#${item.id} | ${item.publicId}`}
+							/>
 						</div>
 					))
 					: (isLoaded && !(Array.isArray(withdrawals)) && <p>No withdrawals available</p>)
