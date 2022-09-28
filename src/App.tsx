@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./views/Main";
 import useMetamask from "./helpers/useMetamask";
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
 import MyriaAssets from "./views/MyriaAssets";
 import EthAssets from "./views/EthAssets";
 import Erc721Withdrawals from "./views/Erc721Withdrawals";
