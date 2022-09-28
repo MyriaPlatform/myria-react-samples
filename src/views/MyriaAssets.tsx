@@ -52,7 +52,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 			{isLoading && <p>Loading assets...</p>}
 
 			<div className="row align-items-start text-center mt-3">
-				{(Array.isArray(assets) && isLoaded)
+				{(assets && Array.isArray(assets) && isLoaded)
 					? assets.map((asset: any) => (
 						<div className="col mb-3" key={asset.id}>
 							<div className="card mry-card" key={asset.id} style={{ width: "14rem" }}>

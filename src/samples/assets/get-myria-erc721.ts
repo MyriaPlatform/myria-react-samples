@@ -3,14 +3,18 @@ import { MyriaClient, OnchainAssetManager } from "myria-core-sdk";
 export async function getMyriaErc721ByStarkKey(client: MyriaClient, starkKey: string) {
   const assetManager: OnchainAssetManager = new OnchainAssetManager(client);
 
-  let assets;
+  let assets: any = [];
   try {
     console.log(
       `Retrieving a list of assets with ${starkKey} stark key...`
     );
     await assetManager.getFullInfoAssetByStarkKey(starkKey)
-      .then((data) => {
-        assets = (data as any).data.MINTABLE_ERC721[0];
+      .then((data: any) => {
+        data.data.MINTABLE_ERC721.forEach((item: any) => {
+          item.forEach((asset: any) => {
+            assets.push(asset);
+          });
+        });
       });
     console.log(assets);
     return assets;
