@@ -4,7 +4,7 @@ export async function listErc721(client: MyriaClient, account: string, starkKey:
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
   const assetManager = moduleFactory.getAssetOnchainManager();
-  const asset = (await assetManager.getAssetById(assetId)).data;
+  const asset = (await assetManager.getAssetById(assetId) as any).data;
   const price = "0.01";
 
   const signableFee =
