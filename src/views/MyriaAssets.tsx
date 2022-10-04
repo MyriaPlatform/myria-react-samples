@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ImageCard from '../components/ImageCard';
 import { getMyriaErc721ByStarkKey } from "../samples/assets/get-myria-erc721";
 import { listErc721 } from '../samples/assets/list-erc721';
+import { bulkListErc721 } from '../samples/assets/bulk-list-erc721';
 import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
 
 type Props = {
@@ -44,6 +45,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 		return await listErc721(client, account, starkKey, asset);
 	}
 
+	const onBulkList = async () => {
+		return await bulkListErc721(client, account, starkKey, assets);
+	}
+
 	return (
 		<div>
 			{err && <code className="mt-3">{err}</code>}
@@ -52,20 +57,29 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
 			{isLoading && <p>Loading assets...</p>}
 
-			<div className="row align-items-start text-center mt-3">
+			<div className="row text-center mt-3">
 				{(assets && Array.isArray(assets) && isLoaded)
-					? assets.map((asset: any) => (
-						<div className="col mb-3" key={asset.id}>
-							<ImageCard 
-								item={asset}
-								onButtonClick1={() => onWithdraw(asset)}
-								buttonTitle1="Withdraw NFT"
-								onButtonClick2={() => onList(asset.id)}
-								buttonTitle2="List NFT"
-								title={asset.name}
-							/>
+					?
+					<>
+						<div className="row">
+							<div className="col mb-3">
+								<button className="btn-mry" onClick={() => onBulkList()}>Bulk list NFTs</button>
+							</div>
 						</div>
-					))
+						{assets.map((asset: any) => (
+							<div className="col mb-3" key={asset.id}>
+								<ImageCard
+									item={asset}
+									onButtonClick1={() => onWithdraw(asset)}
+									buttonTitle1="Withdraw NFT"
+									onButtonClick2={() => onList(asset.id)}
+									buttonTitle2="List NFT"
+									title={asset.name}
+								/>
+
+							</div>
+						))}
+					</>
 					: (isLoaded && !(Array.isArray(assets)) && <p>No assets available</p>)
 				}
 			</div>
