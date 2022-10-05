@@ -4,7 +4,7 @@ import Home from "./views/Main";
 import useMetamask from "./helpers/useMetamask";
 import Navbar from "./components/Navbar";
 import MyriaAssets from "./views/MyriaAssets";
-import EthAssets from "./views/EthAssets";
+// import EthAssets from "./views/EthAssets";
 import Erc721Withdrawals from "./views/Erc721Withdrawals";
 import Wallet from "./views/Wallet";
 import { DeveloperAccountManager } from "myria-core-sdk";
@@ -27,10 +27,10 @@ function App() {
       title: "Myria L2 Assets",
       url: "/myria-assets"
     },
-    {
-      title: "Ethereum L1 assets",
-      url: "/eth-assets"
-    },
+    // {
+    //   title: "Ethereum L1 assets",
+    //   url: "/eth-assets"
+    // },
     {
       title: "Withdrawals",
       url: "/withdrawals"
@@ -73,7 +73,7 @@ function App() {
           <Route path="/" element={<Home isConnected={isConnected} account={account} starkKey={starkKey} />} />
           <Route path="/wallet" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} />} />
           <Route path="/myria-assets" element={<MyriaAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
-          <Route path="/eth-assets" element={<EthAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          {/* <Route path="/eth-assets" element={<EthAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} /> */}
           <Route path="/withdrawals" element={<Erc721Withdrawals isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
         </Routes>
       </div>
