@@ -4,10 +4,11 @@ type Props = {
   onButtonClick2?: any,
   buttonTitle1: string,
   buttonTitle2?: string,
-  title: string
+  title: string,
+  footer: string
 }
 
-const ImageCard = ({ item, onButtonClick1, onButtonClick2, buttonTitle1, buttonTitle2, title }: Props) => {
+const ImageCard = ({ item, onButtonClick1, onButtonClick2, buttonTitle1, buttonTitle2, title, footer }: Props) => {
   return (
     <>
       <div className="card mry-card" key={item.id} style={{ width: "14rem" }}>
@@ -23,7 +24,7 @@ const ImageCard = ({ item, onButtonClick1, onButtonClick2, buttonTitle1, buttonT
           }
         </div>
         <div className="card-footer">
-          <small className="text-muted">#{item.id} | {item.publicId}</small>
+          <small className="text-muted">{footer}</small>
         </div>
       </div>
     </>

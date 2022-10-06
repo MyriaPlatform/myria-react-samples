@@ -75,6 +75,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 									onButtonClick2={() => onList(asset.id)}
 									buttonTitle2="List NFT"
 									title={asset.name}
+									footer={`${asset.id} | ${asset.publicId}`}
 								/>
 
 							</div>

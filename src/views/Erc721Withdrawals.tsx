@@ -59,7 +59,7 @@ const Erc721Withdrawals = ({ isConnected, account, starkKey, client }: Props) =>
 								buttonTitle1="Complete Withdrawal"
 								title={`#${item.tokenId}`}
 								body={`Status: ${item.transactionStatus}`}
-								footer={`#${item.id} | ${item.publicId}`}
+								footer={item.tokenAddress}
 							/>
 						</div>
 					))
