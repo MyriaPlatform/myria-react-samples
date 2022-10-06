@@ -9,7 +9,7 @@ export async function completeErc721Withdrawal(client: MyriaClient, account: str
     tokenType: TokenType.MINTABLE_ERC721,
     assetType: asset.assetType,
     tokenAddress: asset.tokenAddress,
-    mintingBlob: asset.blueprint
+    mintingBlob: `{${asset.tokenId}}:{${asset.blueprint}}`
   }
   console.log(params);
 
