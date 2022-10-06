@@ -1,10 +1,10 @@
 import { MyriaClient } from 'myria-core-sdk';
 import { useEffect, useState } from 'react';
-import ImageCard from '../components/ImageCard';
 import { getMyriaErc721ByStarkKey } from "../samples/assets/get-myria-erc721";
 import { listErc721 } from '../samples/assets/list-erc721';
 import { bulkListErc721 } from '../samples/assets/bulk-list-erc721';
 import { withdrawErc721 } from "../samples/assets/withdraw-erc721";
+import ImageCard from '../components/ImageCard';
 
 type Props = {
 	isConnected: boolean,
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
-	const [assets, setAssets] = useState(null);
+	const [assets, setAssets] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
@@ -58,7 +58,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 			{isLoading && <p>Loading assets...</p>}
 
 			<div className="row text-center mt-3">
-				{(assets && Array.isArray(assets) && isLoaded)
+				{(assets && assets.length && isLoaded)
 					?
 					<>
 						<div className="row">
@@ -80,7 +80,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 							</div>
 						))}
 					</>
-					: (isLoaded && !(Array.isArray(assets)) && <p>No assets available</p>)
+					: (isLoaded && !assets.length && <p>No assets available</p>)
 				}
 			</div>
 		</div>
