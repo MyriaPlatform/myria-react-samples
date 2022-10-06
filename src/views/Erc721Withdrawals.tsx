@@ -13,7 +13,7 @@ type Props = {
 }
 
 const Erc721Withdrawals = ({ isConnected, account, starkKey, client }: Props) => {
-	const [withdrawals, setWithdrawals] = useState(null);
+	const [withdrawals, setWithdrawals] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
@@ -50,7 +50,7 @@ const Erc721Withdrawals = ({ isConnected, account, starkKey, client }: Props) =>
 			{isLoading && <p>Loading...</p>}
 
 			<div className="row align-items-start text-center mt-3">
-				{(Array.isArray(withdrawals) && isLoaded)
+				{(withdrawals && withdrawals.length && isLoaded)
 					? withdrawals.map((item: any) => (
 						<div className="col mb-3" key={item.assetId}>
 							<TextCard
@@ -63,7 +63,7 @@ const Erc721Withdrawals = ({ isConnected, account, starkKey, client }: Props) =>
 							/>
 						</div>
 					))
-					: (isLoaded && !(Array.isArray(withdrawals)) && <p>No withdrawals available</p>)
+					: (isLoaded && !withdrawals.length && <p>No withdrawals available</p>)
 				}
 			</div>
 		</div>

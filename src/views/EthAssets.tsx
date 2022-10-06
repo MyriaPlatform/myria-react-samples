@@ -12,7 +12,7 @@ type Props = {
 }
 
 const EthAssets = ({ isConnected, account, client, starkKey }: Props) => {
-	const [assets, setAssets] = useState([]);
+	const [assets, setAssets] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [err, setErr] = useState('');
@@ -49,7 +49,7 @@ const EthAssets = ({ isConnected, account, client, starkKey }: Props) => {
 			{isLoading && <p>Loading assets...</p>}
 
 			<div className="row align-items-start text-center mt-3">
-				{(Array.isArray(assets) && isLoaded)
+				{(assets && assets.length && isLoaded)
 					? assets.map((asset: any) => (
 						<div className="col mb-3" key={asset.tokenId}>
 							<TextCard
