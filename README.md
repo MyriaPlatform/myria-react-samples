@@ -4,6 +4,25 @@ React-based application for client interactions with Myria Core SDK.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup
+
+### 1. Clone the repository
+
+```
+git clone https://github.com/MyriaPlatform/myria-react-samples.git
+```
+
+### 2. Enter myria-react-samples directory
+
+```
+cd myria-react-samples
+```
+
+### 3. Install dependencies
+```
+yarn
+```
+
 ## Running the app
 
 ### Development
