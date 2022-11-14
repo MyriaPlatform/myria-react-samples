@@ -3,19 +3,10 @@
 React-based application for client interactions with Myria Core SDK.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-## Setting up
-Set up the project.
-
-```
-cd existing_repo
-yarn install
-```
-Recomended node version 14.15.0 || ^16.10.0 || >=18.0.0
-
-Create your new env file following the .env.example and make sure to fullfiled following configurable variable.
-Change the env variable in STAGING or PRODUCTION in myria-client.ts based on the intended environment
 
 ## Setup
+
+Recomended node versions: 14.15.0 || ^16.10.0 || >=18.0.0
 
 ### 1. Clone the repository
 
@@ -44,6 +35,10 @@ yarn start
 
 Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### Production
+
+If you want to use the app in production, replace targeted environment from `STAGING` to `PRODUCTION` in the [myria-client.ts](https://github.com/MyriaPlatform/myria-react-samples/blob/master/src/samples/common/myria-client.ts#L30) file.
 
 ### Testing
 
