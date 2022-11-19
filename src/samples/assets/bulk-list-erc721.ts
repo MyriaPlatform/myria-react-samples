@@ -9,7 +9,15 @@ async function getAssets(assets: any, assetManager: any) {
   return listingAssets;
 }
 
-export async function bulkListErc721(client: MyriaClient, account: string, starkKey: string, assets: any) {
+export async function bulkListErc721(
+  client: MyriaClient,
+  account: string,
+  starkKey: string,
+  assets: any,
+  price: string,
+  startIndex: number,
+  endIndex: number
+) {
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
   const assetManager = moduleFactory.getAssetOnchainManager();
@@ -21,12 +29,13 @@ export async function bulkListErc721(client: MyriaClient, account: string, stark
   try {
     console.log("Initiating a bulk listing...");
     await timer(2000);
-    
-    const price = "0.5";
-    const startAssetIndex = 0;
-    const endAssetIndex = 2;
 
-    for (let i = startAssetIndex; i < endAssetIndex; i++) {
+    // price = "0.5";
+    // startIndex = 0;
+    // endIndex = 2;
+
+    for (let i = startIndex; i < endIndex; i++) {
+      console.log(startIndex, endIndex, price);
       const signableFee =
         (listingAssets[i]?.fee && listingAssets[i]?.fee?.length) > 0
           ? [

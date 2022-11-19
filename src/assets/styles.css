@@ -51,3 +51,15 @@ a.nav-link {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.list-form {
+  background: #0b2231;
+  border-radius: 10px;
+}
+
+input.form-control, input.form-control:focus {
+  background: #040b10;
+  color: #fff;
+  padding: 10px 18px;
+  border: 1px solid rgb(11 34 49/1);
+}

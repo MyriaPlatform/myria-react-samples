@@ -14,6 +14,10 @@ type Props = {
 }
 
 const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
+	const [price, setPrice] = useState<any>("0.001");
+	const [startIndex, setStartIndex] = useState<any>(0);
+	const [endIndex, setEndIndex] = useState<any>(0);
+
 	const [assets, setAssets] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -45,9 +49,21 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 		return await listErc721(client, account, starkKey, asset);
 	}
 
-	const onBulkList = async () => {
-		return await bulkListErc721(client, account, starkKey, assets);
+	const onBulkList = async (price: string, startIndex: number, endIndex: number) => {
+		return await bulkListErc721(client, account, starkKey, assets, price, startIndex, endIndex);
 	}
+
+	const onPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(event.target.value);
+  };
+
+	const onEndIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEndIndex(event.target.value);
+  };
+
+	const onStartIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStartIndex(event.target.value);
+  };
 
 	return (
 		<div>
@@ -61,9 +77,23 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 				{(assets && assets.length && isLoaded)
 					?
 					<>
-						<div className="row">
-							<div className="col mb-3">
-								<button className="btn-mry" onClick={() => onBulkList()}>Bulk list NFTs</button>
+						<div className="row py-3 mb-3 list-form">
+							<div className="row">
+								<div className="col">
+									<input type="number" name="startIndex" min="0" value={startIndex} onChange={onStartIndexChange} className="form-control" placeholder="Start index" />
+								</div>
+								<div className="col">
+									<input type="number" name="endIndex" min="0" value={endIndex} onChange={onEndIndexChange} className="form-control" placeholder="End index" />
+								</div>
+								<div className="col">
+									<input type="text" name="price" value={price} onChange={onPriceChange} className="form-control" placeholder="Price" />
+								</div>
+								<div className="col">
+									<button className="btn-mry" onClick={() => onBulkList(price, startIndex, endIndex)}>Bulk list NFTs</button>
+								</div>
+								{/* <div className="col">
+									<button className="btn-mry" onClick={() => console.log(`${price}, ${startIndex}, ${endIndex}`)}>Bulk unlist NFTs</button>
+								</div> */}
 							</div>
 						</div>
 						{assets.map((asset: any) => (
