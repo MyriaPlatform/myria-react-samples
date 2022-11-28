@@ -8,20 +8,10 @@ export async function getMyriaErc721ByStarkKey(client: MyriaClient, starkKey: st
     console.log(
       `Retrieving a list of assets with ${starkKey} stark key...`
     );
-    await assetManager.getFullInfoAssetByStarkKey(starkKey)
-      .then((data: any) => {
-        if (data.data.MINTABLE_ERC721) {
-          data.data.MINTABLE_ERC721.forEach((item: any) => {
-            item.forEach((asset: any) => {
-              assets.push(asset);
-            });
-          });
-        } else {
-          return;
-        }
-      });
-      console.log(assets);
-      return assets;
+    await assetManager.getAssetByStarkKey(starkKey).then((data: any) => {
+      assets = data.data.items
+    });
+    return assets;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error);

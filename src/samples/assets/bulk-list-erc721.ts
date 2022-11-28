@@ -1,12 +1,15 @@
 import { CreateOrderEntity, FeeType, ModuleFactory, MyriaClient, OrderEntity, SignableOrderInput, TokenType } from "myria-core-sdk";
 
+const timer = (ms: any) => new Promise(res => setTimeout(res, ms));
+
 async function getAssets(assets: any, assetManager: any) {
-  const listingAssets: any[] = [];
+  const data: any[] = [];
   assets.forEach(async (asset: any) => {
     const assetDetails = (await assetManager.getAssetById(asset.id) as any).data;
-    listingAssets.push(assetDetails);
+    data.push(assetDetails);
   });
-  return listingAssets;
+  await timer(3000);
+  return data;
 }
 
 export async function bulkListErc721(
@@ -21,27 +24,20 @@ export async function bulkListErc721(
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
   const assetManager = moduleFactory.getAssetOnchainManager();
-  const listingAssets = await getAssets(assets, assetManager);
 
-  const timer = (ms: any) => new Promise(res => setTimeout(res, ms));
-  let bulkListResult: OrderEntity[] = [];
+  await getAssets(assets, assetManager).then(async (data) => {
+    let bulkListResult: OrderEntity[] = [];
 
-  try {
     console.log("Initiating a bulk listing...");
     await timer(2000);
 
-    // price = "0.5";
-    // startIndex = 0;
-    // endIndex = 2;
-
     for (let i = startIndex; i < endIndex; i++) {
-      console.log(startIndex, endIndex, price);
       const signableFee =
-        (listingAssets[i]?.fee && listingAssets[i]?.fee?.length) > 0
+        (data[i]?.fee && data[i]?.fee?.length) > 0
           ? [
             {
-              address: listingAssets[i]?.fee[0].address,
-              percentage: listingAssets[i]?.fee[0].percentage,
+              address: data[i]?.fee[0].address,
+              percentage: data[i]?.fee[0].percentage,
               feeType: FeeType.ROYALTY
             }
           ]
@@ -50,13 +46,13 @@ export async function bulkListErc721(
       const payload: SignableOrderInput = {
         orderType: "SELL",
         ethAddress: account,
-        assetRefId: parseInt(listingAssets[i].id, 10),
+        assetRefId: data[i].id,
         starkKey: starkKey,
         tokenSell: {
           type: TokenType.MINTABLE_ERC721,
           data: {
-            tokenId: listingAssets[i]?.tokenId,
-            tokenAddress: listingAssets[i]?.tokenAddress
+            tokenId: data[i]?.tokenId,
+            tokenAddress: data[i]?.tokenAddress
           }
         },
         amountSell: "1",
@@ -72,7 +68,7 @@ export async function bulkListErc721(
       };
 
       const signature = await orderManager?.signableOrder(payload);
-      await timer(2000);
+      await timer(4000);
 
       const feeSign = signature?.feeInfo
         ? {
@@ -86,7 +82,7 @@ export async function bulkListErc721(
         ? [
           {
             feeType: FeeType.ROYALTY,
-            percentage: listingAssets[i]?.fee[0].percentage,
+            percentage: data[i]?.fee[0].percentage,
             address: account
           }
         ]
@@ -94,7 +90,7 @@ export async function bulkListErc721(
 
       if (signature) {
         const paramCreateOrder: CreateOrderEntity = {
-          assetRefId: parseInt(listingAssets[i].id, 10),
+          assetRefId: parseInt(data[i].id, 10),
           orderType: "SELL",
           feeSign: feeSign,
           includeFees: true,
@@ -110,16 +106,14 @@ export async function bulkListErc721(
         };
         const listResponse = await orderManager?.createOrder(paramCreateOrder);
         if (listResponse) {
-          console.log(`Listed asset #${listingAssets[i].id}`);
+          console.log(`Listed asset #${data[i].id}`);
           bulkListResult.push(listResponse);
         }
       }
-      await timer(2000);
+      await timer(3000);
     }
     if (bulkListResult && bulkListResult.length) {
       console.log(`Bulk listing is completed. Listed ${bulkListResult.length} assets...`);
     }
-  } catch (error) {
-    throw new Error(JSON.stringify(error, null, 2));
-  }
+  });
 }

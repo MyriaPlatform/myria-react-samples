@@ -28,8 +28,11 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 			const getErc721 = async () => {
 				setIsLoading(true);
 				try {
-					const result = await getMyriaErc721ByStarkKey(client, starkKey);
-					setAssets(result);
+					await getMyriaErc721ByStarkKey(client, starkKey).then((data) => {
+						if (typeof (data) !== undefined) {
+							setAssets(data);
+						}
+					});
 				} catch (err: any) {
 					setErr(err.message);
 				} finally {
@@ -54,16 +57,16 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 	}
 
 	const onPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(event.target.value);
-  };
+		setPrice(event.target.value);
+	};
 
 	const onEndIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEndIndex(event.target.value);
-  };
+		setEndIndex(event.target.value);
+	};
 
 	const onStartIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStartIndex(event.target.value);
-  };
+		setStartIndex(event.target.value);
+	};
 
 	return (
 		<div>
@@ -74,7 +77,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 			{isLoading && <p>Loading assets...</p>}
 
 			<div className="row text-center mt-3">
-				{(assets && assets.length && isLoaded)
+				{(assets && isLoaded)
 					?
 					<>
 						<div className="row py-3 mb-3 list-form">
@@ -91,9 +94,6 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 								<div className="col">
 									<button className="btn-mry" onClick={() => onBulkList(price, startIndex, endIndex)}>Bulk list NFTs</button>
 								</div>
-								{/* <div className="col">
-									<button className="btn-mry" onClick={() => console.log(`${price}, ${startIndex}, ${endIndex}`)}>Bulk unlist NFTs</button>
-								</div> */}
 							</div>
 						</div>
 						{assets.map((asset: any) => (
@@ -111,7 +111,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 							</div>
 						))}
 					</>
-					: (isLoaded && !assets.length && <p>No assets available</p>)
+					: (isLoaded && !assets && <p>No assets available</p>)
 				}
 			</div>
 		</div>
