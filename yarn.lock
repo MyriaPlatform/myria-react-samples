@@ -8173,10 +8173,10 @@ multihashes@^0.4.15, multihashes@~0.4.15:
     multibase "^0.7.0"
     varint "^5.0.0"
 
-myria-core-sdk@^0.0.164:
-  version "0.0.164"
-  resolved "https://registry.yarnpkg.com/myria-core-sdk/-/myria-core-sdk-0.0.164.tgz#8b11867835cc8b4112e88d0f54ba7b27ee876d26"
-  integrity sha512-wslQJ2oxVA/qK/D73hextocBx3WtUkS/RKgR26VYNNAnsu1PHHjhKmTLfpxs/Q0uiqF7rHEZ7EfA8lS56Y1jsQ==
+myria-core-sdk@^0.0.167-v4:
+  version "0.0.167-v4"
+  resolved "https://registry.yarnpkg.com/myria-core-sdk/-/myria-core-sdk-0.0.167-v4.tgz#e89ccd726673739de3abbd45e48f397830ad62dd"
+  integrity sha512-ytD0h/dCRVEMHSl7kV42riiGpPhm5JlzwUWz5bebadpiYEY2pV3X1mlQNCqcfqU9MQR966UzsziQkfmOtAj3fw==
   dependencies:
     "@babel/eslint-parser" "^7.17.0"
     "@starkware-industries/starkware-crypto-utils" "^0.0.2"

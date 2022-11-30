@@ -11,7 +11,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "bootstrap": "5.2.0",
-    "myria-core-sdk": "^0.0.164",
+    "myria-core-sdk": "^0.0.167-v4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
