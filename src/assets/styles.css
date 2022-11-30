@@ -1,7 +1,9 @@
 body {
   background: #040b10;
 }
-.table, p {
+
+.table,
+p {
   color: #fff;
 }
 
@@ -43,6 +45,7 @@ a.nav-link {
   border: none;
   border-radius: 0;
 }
+
 .card-link {
   color: #9ac9e3;
 }
@@ -57,7 +60,8 @@ a.nav-link {
   border-radius: 10px;
 }
 
-input.form-control, input.form-control:focus {
+input.form-control,
+input.form-control:focus {
   background: #040b10;
   color: #fff;
   padding: 10px 18px;
