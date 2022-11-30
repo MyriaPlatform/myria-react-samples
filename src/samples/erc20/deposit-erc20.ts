@@ -1,4 +1,5 @@
 import { DepositERC20Params, DepositModule, MyriaClient } from "myria-core-sdk";
+import { convertEthToWei } from "../common/convertEthToWei";
 
 export async function depositErc20(client: MyriaClient, starkKey: string, publicKey: string, contractAddress: string, amount: string) {
   const depositModule: DepositModule = new DepositModule(client);
@@ -6,7 +7,7 @@ export async function depositErc20(client: MyriaClient, starkKey: string, public
   const params: DepositERC20Params = {
     starkKey: starkKey,
     contractAddress: contractAddress,
-    amount: amount,
+    amount: convertEthToWei(amount),
     ethAddress: publicKey
   }
 
