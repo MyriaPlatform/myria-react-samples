@@ -28,7 +28,7 @@ const Wallet = ({ isConnected, account, starkKey, client }: Props) => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-7 list-form py-3 mt-3">
+        <div className="col-lg-7 list-form py-3 mt-3">
           <h4 className="text-white">Wallet Info</h4>
           <table className="table">
             <tbody>
@@ -47,9 +47,7 @@ const Wallet = ({ isConnected, account, starkKey, client }: Props) => {
             </tbody>
           </table>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-7 list-form py-3 mt-3">
+        <div className="col-lg-4 list-form py-3 mt-3">
           <h4 className="text-white">Deposit tokens</h4>
           <div className="form-row">
             <div className="col">

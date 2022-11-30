@@ -58,6 +58,7 @@ a.nav-link {
 .list-form {
   background: #0b2231;
   border-radius: 10px;
+  margin-right: 10px;
 }
 
 input.form-control,
