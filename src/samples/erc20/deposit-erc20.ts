@@ -1,4 +1,4 @@
-import { DepositERC20Params, DepositModule, MyriaClient } from "myria-core-sdk";
+import { ConfirmationType, DepositERC20Params, DepositModule, MyriaClient, SendOptions } from "myria-core-sdk";
 import { convertEthToWei } from "../common/convertEthToWei";
 
 export async function depositErc20(client: MyriaClient, starkKey: string, publicKey: string, contractAddress: string, amount: string) {
@@ -7,16 +7,16 @@ export async function depositErc20(client: MyriaClient, starkKey: string, public
   const params: DepositERC20Params = {
     starkKey: starkKey,
     contractAddress: contractAddress,
-    amount: convertEthToWei(amount),
+    amount: String(convertEthToWei(amount.toString())),
     ethAddress: publicKey
   }
 
-  console.log(params);
-
-  const depositResponse = await depositModule.depositERC20(params);
-
-  if (depositResponse) {
-    console.log("Deposit response:");
-    console.log(JSON.stringify(depositResponse, null, 2));
+  const sendOptions: SendOptions = {
+    from: publicKey,
+    confirmationType: ConfirmationType.Confirmed,
   }
+
+  await depositModule.depositERC20(params, sendOptions).then((data) => {
+    console.log(JSON.stringify(data, null, 2));
+  });
 }
