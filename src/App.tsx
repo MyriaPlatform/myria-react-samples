@@ -70,8 +70,8 @@ function App() {
       />
       <div className="container mx-auto mt-3">
         <Routes>
-          <Route path="/" element={<Home isConnected={isConnected} account={account} starkKey={starkKey} />} />
-          <Route path="/wallet" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} />} />
+          <Route path="/" element={<Home isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/wallet" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
           <Route path="/myria-assets" element={<MyriaAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
           {/* <Route path="/eth-assets" element={<EthAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} /> */}
           <Route path="/withdrawals" element={<Erc721Withdrawals isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
