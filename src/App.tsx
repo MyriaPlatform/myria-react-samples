@@ -31,10 +31,10 @@ function App() {
     //   title: "Ethereum L1 assets",
     //   url: "/eth-assets"
     // },
-    {
-      title: "Withdrawals",
-      url: "/withdrawals"
-    },
+    // {
+    //   title: "Withdrawals",
+    //   url: "/withdrawals"
+    // },
   ];
 
   useEffect(() => {

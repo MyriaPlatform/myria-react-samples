@@ -1,4 +1,4 @@
-import { MyriaClient, TokenType, WithdrawalModule, WithdrawAndMintParams } from "myria-core-sdk";
+import { MyriaClient, WithdrawalModule, WithdrawAndMintParams } from "myria-core-sdk";
 
 export async function completeErc721Withdrawal(client: MyriaClient, account: string, asset: any, starkKey: string) {
   const withdrawalModule: WithdrawalModule = new WithdrawalModule(client);
@@ -6,9 +6,7 @@ export async function completeErc721Withdrawal(client: MyriaClient, account: str
   const params: WithdrawAndMintParams = {
     starkKey: starkKey,
     walletAddress: account,
-    tokenType: TokenType.MINTABLE_ERC721,
     assetType: asset.assetType,
-    tokenAddress: asset.tokenAddress,
     mintingBlob: `{${asset.tokenId}}:{${asset.blueprint}}`
   }
   console.log(params);
