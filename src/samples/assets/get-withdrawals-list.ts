@@ -8,7 +8,9 @@ export async function getWithdrawalsList(client: MyriaClient, starkKey: string) 
     console.log(
       `Retrieving a list of withdrawals...`
     );
-    await trxManager.getTransactionList(starkKey)
+    await trxManager.getTransactionList({
+      starkKey}
+      )
       .then((data) => {
         if (data.data) {
           withdrawals = data.data

@@ -33,6 +33,10 @@ a.nav-link {
   color: #fff;
   padding: 10px 18px;
 }
+.text-error {
+  margin-top: 4px;
+  color: red;
+}
 
 .mry-card {
   background: #0b2231;
@@ -67,4 +71,54 @@ input.form-control:focus {
   color: #fff;
   padding: 10px 18px;
   border: 1px solid rgb(11 34 49/1);
+}
+
+.Toastify .Toastify__toast {
+  background-color: #081824;
+  border-radius: 12px;
+  box-shadow: 0px 0px 40px 10px rgba(0, 0, 0, 0.3);
+}
+
+.Toastify .Toastify__toast-body {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.Toastify .Toastify__toast--default {
+  color: #ecf4fb;
+}
+
+.Toastify .Toastify__toast--warning {
+  color: #ffe318;
+}
+
+.Toastify .Toastify__toast--success {
+  color: #52ae6c;
+}
+
+.Toastify .toast-success-buy-ticket {
+  margin-top: 100px;
+  color: #5b5b7b;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+  background-color: #ffffff;
+}
+
+.Toastify .Toastify__toast--info {
+  color: #ecf4fb;
+}
+
+.Toastify .Toastify__toast--error {
+  color: #c62828;
+}
+
+.Toastify .Toastify__close-button {
+  color: white;
+  align-self: center;
+}
+.Toastify .Toastify__close-button svg {
+  height: 18px;
+  width: 18px;
 }

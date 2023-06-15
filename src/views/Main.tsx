@@ -1,5 +1,5 @@
 import { MyriaClient } from 'myria-core-sdk';
-import WalletView from './Wallet';
+import WalletView from './WalletERC20';
 
 type Props = {
   isConnected: boolean,
