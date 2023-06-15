@@ -1,23 +1,21 @@
 import React, { useState, useRef } from "react";
-import { depositErc20 } from "../samples/erc20/deposit-erc20";
 import { MyriaClient } from "myria-core-sdk";
+import { burnERC20 } from "../samples/erc20/burn-erc20";
 import Web3 from "web3";
 
 type Props = {
   account: string;
-  starkKey: string;
   client: MyriaClient;
   isConnected: boolean;
 };
 
-const DepositERC20Token = ({
+const BurnERC20Token = ({
   account,
-  starkKey,
   client,
   isConnected,
 }: Props) => {
-  const [contractAddress, setContractAddress] = useState<string>('');
-  const [amount, setAmount] = useState<string>('');
+  const [contractAddress, setContractAddress] = useState<string>("");
+  const [amount, setAmount] = useState<string>("0.001");
   const [errorAction, setErrorAction] = useState<string | undefined>(undefined);
 
   const refContractAddress = useRef<HTMLInputElement>();
@@ -29,29 +27,25 @@ const DepositERC20Token = ({
     setContractAddress(event.target.value);
   };
 
-  const onDeposit = async () => {
+  const onBurnToken = async () => {
     try {
-      if(contractAddress.length < 1 || !Web3.utils.isAddress(contractAddress)) {
+      if (contractAddress.length < 1 || !Web3.utils.isAddress(contractAddress)) {
         refContractAddress.current.focus();
-        setErrorAction(contractAddress.length === 0 ? "Contract Address is Required !" : "Contract Address invalid !");
-        return
-      }
-      else if(amount.length < 1) {
+        setErrorAction(contractAddress.length === 0 ? "Contract Address is Required !" : "Contract Address invalid!");
+        return;
+      } else if (account.length < 1) {
         refAmount.current.focus();
         setErrorAction("Amount is Required !");
-        return
-      }
-      else
-        return await depositErc20(
+        return;
+      } else
+        return await burnERC20(
           client,
-          starkKey,
           account,
           contractAddress,
-          amount
+          account,
         );
-    }
-    catch {
-      setErrorAction("Deposit ERC20 error !");
+    } catch {
+      setErrorAction("Transfer ERC20 error !");
     }
   };
 
@@ -61,7 +55,7 @@ const DepositERC20Token = ({
 
   return (
     <div className="list-form p-4 mt-3">
-      <h4 className="text-white">Deposit Tokens</h4>
+      <h4 className="text-white">Burn Tokens</h4>
       <div className="form-row mt-3">
         <div className="col">
           <input
@@ -90,13 +84,13 @@ const DepositERC20Token = ({
         {errorAction ? <span className="text-error">{errorAction}</span> : null}
         <div className="col mt-4">
           <button
-            onClick={() => onDeposit()}
+            onClick={() => onBurnToken()}
             className={`btn-mry font-weight-bold ${
               isConnected ? "bg-warning text-dark" : "btn-secondary text-muted"
             }`}
             disabled={!isConnected}
           >
-            Deposit Tokens
+            Burn Tokens
           </button>
         </div>
       </div>
@@ -104,4 +98,4 @@ const DepositERC20Token = ({
   );
 };
 
-export default DepositERC20Token;
+export default BurnERC20Token;

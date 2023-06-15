@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { withdrawERC20 } from "../samples/erc20/withdraw-erc20";
 import { MyriaClient } from "myria-core-sdk";
+import Web3 from "web3";
 
 type Props = {
   account: string;
@@ -28,11 +29,11 @@ const WithDrawERC20Token = ({
 
   const onWithDrawTokens = async () => {
     try {
-      if (tokenAddress.length < 1) {
+      if (tokenAddress.length < 1 || !Web3.utils.isAddress(tokenAddress)) {
         refTokenAddress.current.focus();
-        setErrorAction("Token Address is Required !");
+        setErrorAction(tokenAddress.length === 0 ? "Token Address is Required !" : "Token Address invalid");
         return;
-      } else if (account.length < 1) {
+      } else if (amount.length < 1) {
         refAmount.current.focus();
         setErrorAction("Amount is Required !");
         return;
@@ -47,7 +48,7 @@ const WithDrawERC20Token = ({
   };
 
   return (
-    <div className="list-form py-3 mt-3">
+    <div className="list-form p-4 mt-3">
       <h4 className="text-white">WithDraw Tokens</h4>
       <div className="form-row mt-3">
         <div className="col">
@@ -62,7 +63,7 @@ const WithDrawERC20Token = ({
             ref={refTokenAddress}
           />
         </div>
-        <div className="col mt-2">
+        <div className="col mt-4">
           <input
             type="text"
             value={amount}
