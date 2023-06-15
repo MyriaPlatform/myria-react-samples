@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { v4 as uuidV4 } from "uuid";
 import {
   TransactionManager,
   MyriaClient,
@@ -14,22 +14,22 @@ const erc20BurnDescription = "Test-Test Burn Transfer";
 export async function burnERC20(
   client: MyriaClient,
   walletAddress: string,
-  contractAddress: string,
+  inputContractAddress: string,
   amount: string
 ) {
   const transactionModule: TransactionManager = new TransactionManager(client);
 
   const burnTransferredItems: ItemSignableBurnParams[] = [
     {
-        quantizedAmount: String(convertAmountToQuantizedAmount(amount)),
-        tokenType: TokenType.ERC20,
-        tokenData: {
-            tokenAddress: contractAddress,
-            quantum: QUANTUM
-        },
-    }
+      quantizedAmount: String(convertAmountToQuantizedAmount(amount)),
+      tokenType: TokenType.ERC20,
+      tokenData: {
+        tokenAddress: inputContractAddress,
+        quantum: QUANTUM,
+      },
+    },
   ];
-  const randomRequestID = crypto.randomUUID();
+  const randomRequestID = uuidV4();
   const params: BurnTokenParams = {
     senderWalletAddress: walletAddress,
     groupRequestId: randomRequestID,
@@ -38,6 +38,9 @@ export async function burnERC20(
     description: erc20BurnDescription,
     items: burnTransferredItems,
   };
-
-  await transactionModule.burnTokens(params);
+  try {
+      await transactionModule.burnTokens(params);
+  } catch (error) {
+    console.log(error)
+  }
 }

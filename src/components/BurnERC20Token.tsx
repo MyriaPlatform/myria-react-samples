@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { MyriaClient } from "myria-core-sdk";
 import { burnERC20 } from "../samples/erc20/burn-erc20";
 import Web3 from "web3";
+import { toast } from "react-toastify";
+import { myriaTokenAddress } from "../samples/erc20/transfer-erc20";
 
 type Props = {
   account: string;
@@ -9,13 +11,9 @@ type Props = {
   isConnected: boolean;
 };
 
-const BurnERC20Token = ({
-  account,
-  client,
-  isConnected,
-}: Props) => {
-  const [contractAddress, setContractAddress] = useState<string>("");
-  const [amount, setAmount] = useState<string>("0.001");
+const BurnERC20Token = ({ account, client, isConnected }: Props) => {
+  const [contractAddress, setContractAddress] = useState<string>(myriaTokenAddress);
+  const [amount, setAmount] = useState<string>("");
   const [errorAction, setErrorAction] = useState<string | undefined>(undefined);
 
   const refContractAddress = useRef<HTMLInputElement>();
@@ -29,23 +27,27 @@ const BurnERC20Token = ({
 
   const onBurnToken = async () => {
     try {
-      if (contractAddress.length < 1 || !Web3.utils.isAddress(contractAddress)) {
+      if (
+        contractAddress.length < 1 ||
+        !Web3.utils.isAddress(contractAddress)
+      ) {
         refContractAddress.current.focus();
-        setErrorAction(contractAddress.length === 0 ? "Contract Address is Required !" : "Contract Address invalid!");
+        setErrorAction(
+          contractAddress.length === 0
+            ? "Contract Address is Required !"
+            : "Contract Address invalid!"
+        );
         return;
-      } else if (account.length < 1) {
+      } else if (amount.length < 1) {
         refAmount.current.focus();
         setErrorAction("Amount is Required !");
         return;
-      } else
-        return await burnERC20(
-          client,
-          account,
-          contractAddress,
-          account,
-        );
+      } else {
+        await burnERC20(client, account, contractAddress, amount);
+        toast("Burn success !", { type: "success" });
+      }
     } catch {
-      setErrorAction("Transfer ERC20 error !");
+      toast("Burn failed !", { type: "error" });
     }
   };
 
@@ -55,7 +57,7 @@ const BurnERC20Token = ({
 
   return (
     <div className="list-form p-4 mt-3">
-      <h4 className="text-white">Burn Tokens</h4>
+      <h4 className="text-white">Burn Token</h4>
       <div className="form-row mt-3">
         <div className="col">
           <input
@@ -85,12 +87,12 @@ const BurnERC20Token = ({
         <div className="col mt-4">
           <button
             onClick={() => onBurnToken()}
-            className={`btn-mry font-weight-bold ${
+            className={`btn-mry fw-bold ${
               isConnected ? "bg-warning text-dark" : "btn-secondary text-muted"
             }`}
             disabled={!isConnected}
           >
-            Burn Tokens
+            Burn Token
           </button>
         </div>
       </div>

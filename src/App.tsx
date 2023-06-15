@@ -4,14 +4,16 @@ import Home from "./views/Main";
 import useMetamask from "./helpers/useMetamask";
 import Navbar from "./components/Navbar";
 import MyriaAssets from "./views/MyriaAssets";
-// import EthAssets from "./views/EthAssets";
 import Erc721Withdrawals from "./views/Erc721Withdrawals";
-import Wallet from "./views/Wallet";
+import Wallet from "./views/WalletERC20";
 import { DeveloperAccountManager } from "myria-core-sdk";
 import { getMyriaClient } from "./samples/common/myria-client";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "./assets/styles.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   const { isInstalled, isConnected, checkIfMetaMaskInstalled, checkIfMetaMaskConnected, account } = useMetamask();
@@ -20,8 +22,8 @@ function App() {
 
   const navbarItems = [
     {
-      title: "Wallet",
-      url: "/wallet"
+      title: "Wallet ERC20",
+      url: "/wallet-erc20"
     },
     {
       title: "Myria L2 Assets",
@@ -62,6 +64,7 @@ function App() {
 
   return (
     <div>
+      <ToastContainer hideProgressBar />
       <Navbar
         title="Myria React Samples"
         items={navbarItems}
@@ -71,7 +74,7 @@ function App() {
       <div className="container mx-auto mt-3">
         <Routes>
           <Route path="/" element={<Home isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
-          <Route path="/wallet" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
+          <Route path="/wallet-erc20" element={<Wallet isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
           <Route path="/myria-assets" element={<MyriaAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />
           {/* <Route path="/eth-assets" element={<EthAssets isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} /> */}
           <Route path="/withdrawals" element={<Erc721Withdrawals isConnected={isConnected} account={account} starkKey={starkKey} client={client} />} />

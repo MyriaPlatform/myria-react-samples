@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { v4 as uuidV4 } from "uuid";
 import BN from "bn.js";
 import { ethers } from "ethers";
 import {
@@ -9,7 +9,7 @@ import {
   TokenType,
 } from "myria-core-sdk";
 export const QUANTUM = "10000000000";
-const myriaTokenAddress = "0xA06116D9E28AF403d6989c45EF8C0b9B971e5E12";
+export const myriaTokenAddress = "0xA06116D9E28AF403d6989c45EF8C0b9B971e5E12";
 const partnerRefId = "Myria-Internal-System";
 const erc20Description = "Myria-Internal-System-Transfer-MYR-Tokens";
 
@@ -30,6 +30,7 @@ export async function transferERC20(
   client: MyriaClient,
   walletAddress: string,
   receiverWalletAddress: string,
+  inputMyriaTokenAddress: string,
   amount: string
 ) {
   const transactionModule: TransactionManager = new TransactionManager(client);
@@ -40,12 +41,12 @@ export async function transferERC20(
         tokenType: TokenType.ERC20,
         receiverWalletAddress: receiverWalletAddress,
         tokenData: {
-            tokenAddress: myriaTokenAddress,
+            tokenAddress: inputMyriaTokenAddress,
             tokenId: "",
         },
     }
   ];
-  const randomRequestID = crypto.randomUUID();
+  const randomRequestID = uuidV4();
   const params: TransferTokenParams = {
     senderWalletAddress: walletAddress,
     items: ItemsTransfer,
@@ -55,6 +56,5 @@ export async function transferERC20(
     description: erc20Description,
     isWaitingForValidation: false,
   };
-
   await transactionModule.bulkTransferERC20Token(params);
 }

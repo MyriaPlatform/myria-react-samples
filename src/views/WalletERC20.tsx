@@ -23,7 +23,7 @@ const Wallet = ({ isConnected, account, starkKey, client }: Props) => {
             <tbody>
               <tr>
                 <td>Wallet Status</td>
-                <td>{isConnected ? "connected" : "not connected"}</td>
+                <td>{isConnected ? "Connected" : "Not Connected"}</td>
               </tr>
               <tr>
                 <td>Wallet Address</td>

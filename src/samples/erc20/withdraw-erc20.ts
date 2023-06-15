@@ -4,6 +4,7 @@ import {
   MyriaClient,
   TokenType,
 } from "myria-core-sdk";
+import { QUANTUM, convertAmountToQuantizedAmount } from "./transfer-erc20";
 
 export async function withdrawERC20(
   client: MyriaClient,
@@ -18,11 +19,10 @@ export async function withdrawERC20(
     senderPublicKey: starkKey,
     senderEthAddress: walletAddress,
     receiverPublicKey: walletAddress,
-    quantum: "10000000000",
-    amount: amount,
+    quantum: QUANTUM,
+    amount: String(convertAmountToQuantizedAmount(amount)),
     tokenAddress: tokenAddress,
     tokenType: TokenType.ERC20,
   };
-
   await withdrawERC20Module.withdrawalOffchainV2(params);
 }

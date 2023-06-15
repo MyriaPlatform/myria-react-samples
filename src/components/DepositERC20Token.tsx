@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { depositErc20 } from "../samples/erc20/deposit-erc20";
 import { MyriaClient } from "myria-core-sdk";
 import Web3 from "web3";
+import { toast } from "react-toastify";
 
 type Props = {
   account: string;
@@ -16,8 +17,8 @@ const DepositERC20Token = ({
   client,
   isConnected,
 }: Props) => {
-  const [contractAddress, setContractAddress] = useState<string>('');
-  const [amount, setAmount] = useState<string>('');
+  const [contractAddress, setContractAddress] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
   const [errorAction, setErrorAction] = useState<string | undefined>(undefined);
 
   const refContractAddress = useRef<HTMLInputElement>();
@@ -31,27 +32,27 @@ const DepositERC20Token = ({
 
   const onDeposit = async () => {
     try {
-      if(contractAddress.length < 1 || !Web3.utils.isAddress(contractAddress)) {
+      if (
+        contractAddress.length < 1 ||
+        !Web3.utils.isAddress(contractAddress)
+      ) {
         refContractAddress.current.focus();
-        setErrorAction(contractAddress.length === 0 ? "Contract Address is Required !" : "Contract Address invalid !");
-        return
-      }
-      else if(amount.length < 1) {
+        setErrorAction(
+          contractAddress.length === 0
+            ? "Contract Address is Required !"
+            : "Contract Address invalid !"
+        );
+        return;
+      } else if (amount.length < 1) {
         refAmount.current.focus();
         setErrorAction("Amount is Required !");
-        return
+        return;
+      } else {
+        await depositErc20(client, starkKey, account, contractAddress, amount);
+        toast("Deposit success !", { type: "success" });
       }
-      else
-        return await depositErc20(
-          client,
-          starkKey,
-          account,
-          contractAddress,
-          amount
-        );
-    }
-    catch {
-      setErrorAction("Deposit ERC20 error !");
+    } catch {
+      toast("Deposit failed !", { type: "error" });
     }
   };
 
@@ -61,7 +62,7 @@ const DepositERC20Token = ({
 
   return (
     <div className="list-form p-4 mt-3">
-      <h4 className="text-white">Deposit Tokens</h4>
+      <h4 className="text-white">Deposit Token</h4>
       <div className="form-row mt-3">
         <div className="col">
           <input
@@ -91,12 +92,12 @@ const DepositERC20Token = ({
         <div className="col mt-4">
           <button
             onClick={() => onDeposit()}
-            className={`btn-mry font-weight-bold ${
+            className={`btn-mry fw-bold ${
               isConnected ? "bg-warning text-dark" : "btn-secondary text-muted"
             }`}
             disabled={!isConnected}
           >
-            Deposit Tokens
+            Deposit Token
           </button>
         </div>
       </div>
