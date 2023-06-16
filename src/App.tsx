@@ -41,7 +41,6 @@ function App() {
     // },
   ];
 
-  useEffect(() => {}, [walletAdrress, isConnected]);
 
   return (
     <div>
