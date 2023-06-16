@@ -1,5 +1,6 @@
 import { EnvTypes, IMyriaClient, ModuleFactory, MyriaClient } from 'myria-core-sdk';
 import Web3 from 'web3';
+import { netWorkID } from './useMetamask';
 
 declare const window: any;
 const MAINNET = 1;
@@ -10,9 +11,9 @@ async function signMetamask() {
   return accountSignMetamask;
 }
 function getEnvTypes(networkId: number) {
-  if (networkId === 1) {
+  if (networkId === netWorkID.MAINNET) {
     return EnvTypes.PRODUCTION;
-  } else if (networkId === 5) {
+  } else if (networkId === netWorkID.GOERLI) {
     return EnvTypes.STAGING; 
   }
   return EnvTypes.STAGING;
