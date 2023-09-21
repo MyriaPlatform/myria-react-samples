@@ -22,12 +22,11 @@ export async function getMyriaClient(isConnected: boolean) {
 	const web3Instance = await initWeb3Instance(isConnected);
 	const networkId = await web3Instance.eth.net.getId();
 
-	console.log("Initializing a Myria client...");
 	const client: IMyriaClient = {
 		provider: web3Instance.eth.currentProvider as any,
 		networkId: networkId,
 		web3: web3Instance as any,
-		env: EnvTypes.STAGING
+		env: networkId === 1 ? EnvTypes.PRODUCTION : EnvTypes.STAGING
 	};
 
 	const myriaClient = new MyriaClient(client);

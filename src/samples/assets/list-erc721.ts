@@ -1,81 +1,62 @@
-import { CreateOrderEntity, FeeType, ModuleFactory, MyriaClient, SignableOrderInput, TokenType } from "myria-core-sdk";
+import {
+  CreateOrderV2Params,
+  EnvTypes,
+  FeeDto,
+  ModuleFactory,
+  MyriaClient,
+  OrderType,
+  TokenType,
+} from "myria-core-sdk";
+import { MYRIA_TOKEN_PROD, MYRIA_TOKEN_STAGING } from "../../utils/utils";
+import { toast } from "react-toastify";
 
-export async function listErc721(client: MyriaClient, account: string, starkKey: string, assetId: string) {
+export async function listErc721(
+  client: MyriaClient,
+  account: string,
+  starkKey: string,
+  assetId: string,
+  price: string,
+  currentTokenType: TokenType
+) {
   const moduleFactory = new ModuleFactory(client);
   const orderManager = moduleFactory.getOrderManager();
   const assetManager = moduleFactory.getAssetOnchainManager();
-  const asset = (await assetManager.getAssetById(assetId) as any).data;
-  const price = "0.01";
+  const asset = ((await assetManager.getAssetById(assetId)) as any).data;
 
-  const signableFee =
-    (asset.fee && asset?.fee?.length) > 0
-      ? [
-        {
-          address: asset?.fee[0].address,
-          percentage: asset?.fee[0].percentage,
-          feeType: FeeType.ROYALTY
-        }
-      ]
-      : undefined;
+  const feeData: FeeDto[] = [
+    {
+      feeType: asset?.fee?.[0].feeType,
+      percentage: asset?.fee?.[0]?.percentage,
+      address: account,
+    },
+  ];
 
-  const payload: SignableOrderInput = {
-    orderType: "SELL",
-    ethAddress: account,
-    assetRefId: parseInt(assetId, 10),
-    starkKey: starkKey,
+  const paramCreateOrder: CreateOrderV2Params = {
+    orderType: OrderType.SELL,
+    ownerWalletAddress: account,
+    ownerStarkKey: starkKey,
+    assetRefId: parseInt(asset.id, 10),
     tokenSell: {
-      type: TokenType.MINTABLE_ERC721,
+      tokenType: TokenType.MINTABLE_ERC721,
       data: {
         tokenId: asset?.tokenId,
-        tokenAddress: asset?.tokenAddress
-      }
+        tokenAddress: asset?.tokenAddress,
+      },
     },
-    amountSell: "1",
-    tokenBuy: {
-      type: TokenType.ETH,
+    tokenReceived: {
+      tokenType: currentTokenType,
       data: {
-        quantum: "10000000000"
-      }
+        tokenAddress:
+          currentTokenType === TokenType.ERC20
+            ? client.env === EnvTypes.PRODUCTION
+              ? MYRIA_TOKEN_PROD.tokenAddress
+              : MYRIA_TOKEN_STAGING.tokenAddress
+            : undefined,
+      },
     },
-    amountBuy: price + '',
-    includeFees: signableFee ? true : false,
-    fees: signableFee
+    price: price + "",
+    fees: feeData,
   };
-  const signature = await orderManager?.signableOrder(payload);
-  const feeSign = signature?.feeInfo
-    ? {
-      feeLimit: signature?.feeInfo?.feeLimit,
-      feeToken: signature?.feeInfo?.assetId,
-      feeVaultId: signature?.feeInfo?.sourceVaultId
-    }
-    : undefined;
-
-  const feeData = signature?.feeInfo
-    ? [
-      {
-        feeType: FeeType.ROYALTY,
-        percentage: asset?.fee[0].percentage,
-        address: account
-      }
-    ]
-    : undefined;
-
-  if (signature) {
-    const paramCreateOrder: CreateOrderEntity = {
-      assetRefId: parseInt(assetId, 10),
-      orderType: "SELL",
-      feeSign: feeSign,
-      includeFees: true,
-      amountSell: signature.amountSell,
-      amountBuy: signature.amountBuy,
-      sellerStarkKey: starkKey,
-      vaultIdSell: signature.vaultIdSell,
-      vaultIdBuy: signature.vaultIdBuy,
-      sellerAddress: account,
-      assetIdBuy: signature.assetIdBuy,
-      assetIdSell: signature.assetIdSell,
-      fees: feeData
-    };
-    return await orderManager?.createOrder(paramCreateOrder);
-  }
+  const listResponse = await orderManager?.createOrderV2(paramCreateOrder);
+  toast.success('Listing success!')
 }

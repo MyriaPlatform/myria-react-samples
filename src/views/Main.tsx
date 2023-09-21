@@ -5,10 +5,10 @@ type Props = {
   isConnected: boolean,
   account: string,
   starkKey: string,
-  client: MyriaClient
+  client: MyriaClient,
 }
 
-const Main = ({ isConnected, account, starkKey, client }: Props) => {
+const Main = ({ isConnected, account, starkKey, client}: Props) => {
   const renderWalletView = (
     <WalletView
       isConnected={isConnected}
