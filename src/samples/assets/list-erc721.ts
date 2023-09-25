@@ -57,6 +57,13 @@ export async function listErc721(
     price: price + "",
     fees: feeData,
   };
-  const listResponse = await orderManager?.createOrderV2(paramCreateOrder);
-  toast.success('Listing success!')
+  let listingResponse;
+  try {
+    listingResponse = await orderManager?.createOrderV2(paramCreateOrder);
+    toast.success('Listing success!')
+  } catch (ex) {
+    console.log('Listing error: ', ex);
+    toast.error("Listing failed. Please check exception and try again !")
+  }
+  
 }

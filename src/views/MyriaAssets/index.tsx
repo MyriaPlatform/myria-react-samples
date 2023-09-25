@@ -188,7 +188,8 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       toast.success("Listing success!")
       setLoadingBulkListing(false);
     } catch (error) {
-      toast.error('Listing failed!. Please try again!')
+      console.log('Listing error: ', error);
+      toast.error("Listing failed. Please check exception and try again !")
       setLoadingBulkListing(false);
     }
   };

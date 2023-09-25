@@ -2,7 +2,6 @@ import {
   CreateOrderV2Params,
   EnvTypes,
   FeeDto,
-  FeeType,
   ModuleFactory,
   MyriaClient,
   OrderEntity,
@@ -15,9 +14,10 @@ const timer = (ms: any) => new Promise((res) => setTimeout(res, ms));
 
 async function getAssets(assets: any, assetManager: any) {
   const data: any[] = [];
-  for(let i = 0; i < assets.length; i++) {
-    const assetDetails = ((await assetManager.getAssetById(assets[i].id)) as any)
-      .data;
+  for (let i = 0; i < assets.length; i++) {
+    const assetDetails = (
+      (await assetManager.getAssetById(assets[i].id)) as any
+    ).data;
     data.push(assetDetails);
   }
   return data;
@@ -75,10 +75,11 @@ export async function bulkListErc721(
       price: price + "",
       fees: feeData,
     };
-    const listResponse = await orderManager?.createOrderV2(paramCreateOrder);
-    if (listResponse) {
+
+    const listingResponse = await orderManager?.createOrderV2(paramCreateOrder);
+    if (listingResponse) {
       console.log(`Listed asset #${data[i].id}`);
-      bulkListResult.push(listResponse);
+      bulkListResult.push(listingResponse);
     }
     await timer(3000);
   }
