@@ -6,6 +6,10 @@ body {
 p {
   color: #fff;
 }
+ul {
+  list-style: none;
+  padding: 0;
+}
 
 .navbar-dark {
   background: #081824 !important;
@@ -58,9 +62,22 @@ a.nav-link {
   text-decoration: underline;
   cursor: pointer;
 }
+.cursor-pointer{
+  cursor: pointer;
+}
+.bg-base-4{
+  background-color: rgb(11, 34, 49);
+}
+.text-base-10{
+  color: #E7EBEE;
+}
+
+.border-none {
+  border: none;
+}
 
 .list-form {
-  background: #0b2231;
+  background: #081824;
   border-radius: 10px;
   margin-right: 10px;
 }
@@ -172,4 +189,14 @@ input.form-control:focus {
   margin-left: 10px;
   cursor: pointer;
   color: #fff;
+}
+.form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  margin-top: 0;
+  border-color: #ffa500;
+}
+.form-check-input:checked {
+  background-color: #ffa500;
+  border-color: #ffa500;
 }

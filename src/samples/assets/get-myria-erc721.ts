@@ -1,6 +1,6 @@
 import { MyriaClient, OnchainAssetManager } from "myria-core-sdk";
 
-export async function getMyriaErc721ByStarkKey(client: MyriaClient, starkKey: string) {
+export async function getMyriaErc721ByStarkKey(client: MyriaClient, starkKey: string, page?:number, limit?: number) {
   const assetManager: OnchainAssetManager = new OnchainAssetManager(client);
 
   let assets: any = [];
@@ -8,9 +8,12 @@ export async function getMyriaErc721ByStarkKey(client: MyriaClient, starkKey: st
     console.log(
       `Retrieving a list of assets with ${starkKey} stark key...`
     );
-    await assetManager.getAssetByStarkKey(starkKey).then((data: any) => {
-      assets = data.data.items
-    });
+    const assetData = await assetManager.getAssetByStarkKey(starkKey, page, limit);
+    if(assetData.data) {
+      assets = assetData.data.items
+    } else {
+      assets = []
+    }
     return assets;
   } catch (error) {
     if (error instanceof Error) {

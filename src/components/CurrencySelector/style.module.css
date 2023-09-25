@@ -1,0 +1,43 @@
+.selectContainer {
+  background-color: rgb(11, 34, 49);
+  height: 46px;
+  width: 100%;
+  min-width: 238px;
+  border-radius: 0.5rem;
+}
+.borderBorderTop {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.selectIcon {
+  width: 24px;
+  margin-right: 10px;
+}
+.selectedName {
+  font-size: 16px;
+  line-height: 24px;
+}
+.selectedShort {
+  border: 4px;
+  background-color: #0A1F2E;
+  color: rgb(161, 175, 186);
+}
+.selectAsset {
+  color: rgb(161, 175, 186);
+  font-size: 14px;
+  line-height: 20px;
+}
+.listItemSelect {
+  z-index: 10;
+  width: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.itemSelect {
+  border-radius: 4px
+}
+.itemSelect:hover {
+  background-color: rgb(15, 45, 66);
+}

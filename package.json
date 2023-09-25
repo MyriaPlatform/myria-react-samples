@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tanstack/react-query": "^4.35.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -11,8 +12,9 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@walletconnect/web3-provider": "^1.8.0",
+    "axios": "^1.5.0",
     "bootstrap": "5.2.0",
-    "myria-core-sdk": "0.0.217",
+    "myria-core-sdk": "0.0.229-test-order-v4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",

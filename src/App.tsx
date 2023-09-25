@@ -19,7 +19,9 @@ function App() {
     starkKey,
     connectL2Wallet,
     walletAdrress,
-    myriaClient
+    myriaClient,
+    netWorkIdUser,
+    setNetWorkIdByUser
   } = useMetamask();
 
   const navbarItems = [
@@ -55,6 +57,8 @@ function App() {
             : "Connect Wallet"
         }
         isConnectedWallet={isConnected}
+        netWorkIdUser={netWorkIdUser}
+        setNetWorkIdByUser={setNetWorkIdByUser}
       />
       <div className="container mx-auto mt-3">
         <Routes>
@@ -66,7 +70,7 @@ function App() {
                 account={walletAdrress}
                 starkKey={starkKey}
                 client={myriaClient}
-              />
+                />
             }
           />
           <Route

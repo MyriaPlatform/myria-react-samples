@@ -1,0 +1,29 @@
+.loadingRing {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-color: inherit;
+  }
+  .loadingRing:after {
+    content: ' ';
+    display: block;
+    width: 0.8em;
+    height: 0.8em;
+    margin: 0.1em;
+    border-radius: 50%;
+    border: 0.075em solid;
+    border-top-color: inherit;
+    border-right-color: transparent;
+    border-bottom-color: inherit;
+    border-left-color: transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
