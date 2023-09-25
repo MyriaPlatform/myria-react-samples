@@ -64,6 +64,7 @@ export async function listErc721(
   } catch (ex) {
     console.log('Listing error: ', ex);
     toast.error("Listing failed. Please check exception and try again !")
+    throw ex
   }
   
 }

@@ -16,7 +16,7 @@ import ETHWhite from "../../icons/ETHWhite";
 import { IOptionsAsset, TOption } from "../../utils/utils";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
-import style from './style.module.css'
+import style from "./style.module.css";
 
 export const optionsAsset: IOptionsAsset = {
   [TokenType.ETH]: {
@@ -145,8 +145,17 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   };
 
   const onList = async (asset: any, price: string) => {
-    await listErc721(client, account, starkKey, asset, price, selectedToken.tokenType);
-    await refetch()
+    try {
+      await listErc721(
+        client,
+        account,
+        starkKey,
+        asset,
+        price,
+        selectedToken.tokenType
+      );
+      await refetch();
+    } catch (error) {}
   };
 
   const onSelectList = (index: number, statusCheck: boolean) => {
@@ -185,11 +194,12 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
         price,
         selectedToken.tokenType
       );
-      toast.success("Listing success!")
+      toast.success("Listing success!");
+      await refetch();
       setLoadingBulkListing(false);
     } catch (error) {
-      console.log('Listing error: ', error);
-      toast.error("Listing failed. Please check exception and try again !")
+      console.log("Listing error: ", error);
+      toast.error("Listing failed. Please check exception and try again !");
       setLoadingBulkListing(false);
     }
   };
@@ -251,8 +261,12 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                   <p className="ms-2 mb-0">Select All</p>
                 </div>
                 <div className="col d-flex align-items-end justify-content-center justify-content-md-end">
-                  <button disabled={loadingBulkListing} className={`btn-mry bg-warning fw-bold text-dark d-flex align-items-center justify-content-center ${style.btnListing}`} onClick={() => onBulkList(price)}>
-                    {loadingBulkListing ? <Loading /> : 'Bulk list NFTs'}
+                  <button
+                    disabled={loadingBulkListing}
+                    className={`btn-mry bg-warning fw-bold text-dark d-flex align-items-center justify-content-center ${style.btnListing}`}
+                    onClick={() => onBulkList(price)}
+                  >
+                    {loadingBulkListing ? <Loading /> : "Bulk list NFTs"}
                   </button>
                 </div>
               </div>
@@ -310,7 +324,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
               <Loading labelSize={16} loadingSize={32} />
             ) : (
               assets.map((asset: any, index: number) => (
-                <div className="col-12 col-md-6 col-lg-3 mb-3 d-flex justify-content-between" key={asset.id}>
+                <div
+                  className="col-12 col-md-6 col-lg-3 mb-3 d-flex justify-content-between"
+                  key={asset.id}
+                >
                   <ImageCard
                     client={client}
                     item={asset}
