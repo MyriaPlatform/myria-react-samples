@@ -43,7 +43,7 @@ export async function bulkListErc721(
   for (let i = 0; i < assets.length; i++) {
     const feeData: FeeDto[] = [
       {
-        feeType: data[i]?.fee?.[0].feeType,
+        feeType: data[i]?.fee?.[0].feeType ?? '',
         percentage: data[i]?.fee?.[0]?.percentage,
         address: account,
       },
