@@ -63,7 +63,7 @@ const ImageCard = ({
         />
       ) : null}
       <div
-        className={`card mry-card position-relative`}
+        className={`card mry-card position-relative h-100`}
         key={item.id}
         style={{
           opacity: disabled || loadingButton1 || loadingButton2 ? "0.5" : 1,

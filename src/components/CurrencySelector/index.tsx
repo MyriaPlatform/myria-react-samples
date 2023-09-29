@@ -86,8 +86,10 @@ export default function CurrencySelector({
               <span className={style.selectAsset}>Select an asset</span>
             )}
           </div>
-          <button aria-label="toggle menu" className='bg-transparent border-none'>
+          <button aria-label="toggle menu" style={{width: 'calc(100% - 20px'}} className='position-absolute bg-transparent border-none'>
+            <div className='d-flex justify-content-end'>
             <ChevronIcon />
+            </div>
           </button>
         </div>
         {isOpen && (

@@ -9814,10 +9814,10 @@ multipipe@^0.1.2:
   dependencies:
     duplexer2 "0.0.2"
 
-myria-core-sdk@0.0.230:
-  version "0.0.230"
-  resolved "https://registry.yarnpkg.com/myria-core-sdk/-/myria-core-sdk-0.0.230.tgz#5ba29143d3246cd89c3621daba6f86794417a328"
-  integrity sha512-4C4ZtkGBZDHX2+eLJ6jHmdMgPzwIbvpDT26iQAt8zP45zAtqIo3J2TWiI+Wggt1O28E8oIzxNr5L4Ncaj0nrhQ==
+myria-core-sdk@^0.0.235:
+  version "0.0.235"
+  resolved "https://registry.yarnpkg.com/myria-core-sdk/-/myria-core-sdk-0.0.235.tgz#19ffbaab9e5b89a92a8be18b4cb57bf87832e6a9"
+  integrity sha512-77LaGR6dkjw/O96DpLDRH9kpe+y83YbHDwwi/QK4ljmyrvo4+UyNUrSGjMK5SsDXvWPUL4u6ZSfMOj/6q4mcwQ==
   dependencies:
     "@babel/eslint-parser" "^7.17.0"
     "@starkware-industries/starkware-crypto-utils" "^0.0.2"
