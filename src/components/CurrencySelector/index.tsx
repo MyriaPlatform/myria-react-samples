@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import ChevronIcon from '../../icons/ChevronIcon';
-import { IOptionsAsset, TOption } from '../../utils/utils';
-import style from './style.module.css'
+import React, { useState, useEffect } from "react";
+import ChevronIcon from "../../icons/ChevronIcon";
+import { IOptionsAsset, TOption } from "../../utils/utils";
+import style from "./style.module.css";
 
 interface TProp {
   selectHandle: any;
   options: IOptionsAsset;
-  className: string
+  className: string;
   defaultSelectedOption?: TOption;
 }
 
@@ -14,14 +14,13 @@ export default function CurrencySelector({
   selectHandle,
   options,
   defaultSelectedOption,
-  className
+  className,
 }: TProp) {
   const [dropdownRef, setDropdownRef] = useState<HTMLDivElement | null>(null);
   const [selectedItem, setSelectedItem] = useState<any>(
-    defaultSelectedOption || options.ETH,
+    defaultSelectedOption || options.ETH
   );
   const [isOpen, setIsOpen] = useState<Boolean>(false);
-
 
   useEffect(() => {
     const clickOutside = (event: MouseEvent) => {
@@ -30,9 +29,9 @@ export default function CurrencySelector({
       }
       handleClose();
     };
-    document.addEventListener('click', clickOutside);
+    document.addEventListener("click", clickOutside);
     return () => {
-      document.removeEventListener('click', clickOutside);
+      document.removeEventListener("click", clickOutside);
     };
   }, [dropdownRef]);
 
@@ -57,8 +56,10 @@ export default function CurrencySelector({
           onClick={() => {
             toggleDropDown();
           }}
-          className={`${style.selectContainer} position-relative d-flex cursor-pointer align-items-center justify-content-between px-4 py-2 ${
-            !isOpen ? 'rounded-lg' : style.borderBorderTop
+          className={`${
+            style.selectContainer
+          } position-relative d-flex cursor-pointer align-items-center justify-content-between px-4 py-2 ${
+            !isOpen ? "rounded-lg" : style.borderBorderTop
           }`}
         >
           <div>
@@ -66,34 +67,51 @@ export default function CurrencySelector({
               <div>
                 {selectedItem ? (
                   <div className="d-flex align-items-center">
-                    <img
-                      className={style.selectIcon}
-                      src={selectedItem.ico}
-                      alt="currency_avatar"
-                    />
-                    <span className={`me-2 text-base-10 ${style.selectedName}`}>
-                      {selectedItem.name}
-                    </span>
-                    <div className={`${style.selectedShort} d-flex align-items-center justify-content-center px-2 py-1`}>
-                      {selectedItem.short}
-                    </div>
+                    {selectedItem.ico.length > 0 && (
+                      <img
+                        className={style.selectIcon}
+                        src={selectedItem.ico}
+                        alt="currency_avatar"
+                      />
+                    )}
+                    {selectedItem.name.length > 0 && (
+                      <span
+                        className={`me-2 text-base-10 ${style.selectedName}`}
+                      >
+                        {" "}
+                        {selectedItem.name}
+                      </span>
+                    )}
+                    {selectedItem.short.length > 0 && (
+                      <div
+                        className={`${style.selectedShort} d-flex align-items-center justify-content-center px-2 py-1`}
+                      >
+                        {selectedItem.short}
+                      </div>
+                    )}
                   </div>
                 ) : (
-                  'Select Currency'
+                  "Select Currency"
                 )}
               </div>
             ) : (
               <span className={style.selectAsset}>Select an asset</span>
             )}
           </div>
-          <button aria-label="toggle menu" style={{width: 'calc(100% - 20px'}} className='position-absolute bg-transparent border-none'>
-            <div className='d-flex justify-content-end'>
-            <ChevronIcon />
+          <button
+            aria-label="toggle menu"
+            style={{ width: "calc(100% - 20px" }}
+            className="position-absolute bg-transparent border-none"
+          >
+            <div className="d-flex justify-content-end">
+              <ChevronIcon />
             </div>
           </button>
         </div>
         {isOpen && (
-          <ul className={`bg-base-4 position-absolute ${style.listItemSelect} pb-3`}>
+          <ul
+            className={`bg-base-4 position-absolute ${style.listItemSelect} pb-3`}
+          >
             {Object.keys(options).map((item: string, index: number) => (
               <div
                 key={`${index}${JSON.stringify(item)}`}
@@ -105,17 +123,23 @@ export default function CurrencySelector({
                 <li className={`${style.itemSelect} py-2 ps-3`}>
                   <div>
                     <div className="d-flex align-items-center">
-                      <img
-                        className={style.selectIcon}
-                        src={options[item].ico}
-                        alt="currency_avatar_2"
-                      />
-                      <span className={`me-2 text-base-10 ${style.selectedName}`}>
+                      {options[item].ico.length > 0 && (
+                        <img
+                          className={style.selectIcon}
+                          src={options[item].ico}
+                          alt="currency_avatar_2"
+                        />
+                      )}
+                      <span
+                        className={`me-2 text-base-10 ${style.selectedName}`}
+                      >
                         {options[item].name}
                       </span>
-                      <div className={`${style.selectedShort} d-flex align-items-center justify-content-center px-2 py-1`}>
+                      { selectedItem?.short && <div
+                        className={`${style.selectedShort} d-flex align-items-center justify-content-center px-2 py-1`}
+                      >
                         {selectedItem.short}
-                      </div>
+                      </div>}
                     </div>
                   </div>
                 </li>

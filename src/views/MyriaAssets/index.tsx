@@ -9,7 +9,6 @@ import ImageCard from "../../components/ImageCard";
 import { getMyriaErc721ByStarkKey } from "../../samples/assets/get-myria-erc721";
 import { listErc721 } from "../../samples/assets/list-erc721";
 import { bulkListErc721 } from "../../samples/assets/bulk-list-erc721";
-import { withdrawErc721 } from "../../samples/assets/withdraw-erc721";
 import { useQuery } from "@tanstack/react-query";
 import CurrencySelector from "../../components/CurrencySelector";
 import ETHWhite from "../../icons/ETHWhite";
@@ -17,6 +16,8 @@ import { IOptionsAsset, TOption } from "../../utils/utils";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 import style from "./style.module.css";
+import { bulkUnListErc721 } from "../../samples/assets/bulk-unlist-erc721";
+import { unListErc721 } from "../../samples/assets/unlist-erc721";
 
 export const optionsAsset: IOptionsAsset = {
   [TokenType.ETH]: {
@@ -42,6 +43,20 @@ export const optionsAsset: IOptionsAsset = {
     ),
   },
 };
+export const optionsSelect: IOptionsAsset = {
+  listing: {
+    id: 3,
+    name: "Listing",
+    short: "",
+    ico: "",
+  },
+  unlisting: {
+    id: 4,
+    name: "Unlisting",
+    short: "",
+    ico: "",
+  },
+};
 
 type Props = {
   isConnected: boolean;
@@ -52,6 +67,7 @@ type Props = {
 
 const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   const [price, setPrice] = useState<any>("0.001");
+  const [isListing, setIsListing] = useState<boolean>(true);
 
   const [assets, setAssets] = useState<any[]>([]);
   const [selectedToken, setSelectedToken] = useState<TOption>(
@@ -60,10 +76,13 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   const [inputCollectionId, setInputCollectionId] = useState<string>("");
   const [inputCurrentPage, setInputCurrentPage] = useState<number>(1);
   const [inputLimitPerPage, setInputLimitPerPage] = useState<number>(10);
-  const [loadingBulkListing, setLoadingBulkListing] = useState<boolean>(false);
+  const [loadingBulkHandle, setLoadingBulkHandle] = useState<boolean>(false);
 
   const selectCurrency = (param: any) => {
     setSelectedToken(param);
+  };
+  const selectListingOption = (param: any) => {
+    setIsListing(param.id === 3);
   };
 
   const getErc721 = async (inputCollectionId: string) => {
@@ -83,7 +102,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     }
     if (data) {
       const assetDatas = data.map((assetData: any, idx: number) => {
-        return { ...assetData, isSelectedBulkList: false };
+        return { ...assetData, isSelectedBulk: false };
       });
       return assetDatas;
     } else {
@@ -118,31 +137,94 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   useEffect(() => {
     if (dataQueryGetERC721) {
-      const assetDatas = dataQueryGetERC721.map(
-        (assetData: any, idx: number) => {
-          return { ...assetData, isSelectedBulkList: false };
-        }
-      );
-      setAssets(assetDatas);
+      const assetData = dataQueryGetERC721
+        .map((assetData: any, idx: number) => {
+          return { ...assetData, isSelectedBulk: false };
+        })
+        .sort((assetData1: any, assetData2: any) => {
+          if (assetData1.order && assetData1.order?.length) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })
+        .filter((assetData: any) => {
+          return isListing
+            ? true
+            : assetData.order && assetData.order?.length > 0;
+        });
+      setAssets(assetData);
     }
-  }, [dataQueryGetERC721]);
+  }, [dataQueryGetERC721, isListing]);
 
   const isSelectedAll = useMemo(() => {
-    let isSelectedAll = assets.every((assetData) => {
-      if (
-        !assetData.isSelectedBulkList &&
-        !(assetData.order && assetData.order?.length > 0)
-      ) {
-        return false;
+    const isSelectedAll = assets.every((assetData) => {
+      if (isListing) {
+        if (
+          !assetData.isSelectedBulk &&
+          !(assetData.order && assetData.order?.length > 0)
+        ) {
+          return false;
+        }
+        return true;
+      } else {
+        if (
+          !assetData.isSelectedBulk &&
+          assetData.order &&
+          assetData.order?.length > 0
+        ) {
+          return false;
+        }
+        return true;
       }
-      return true;
     });
     return isSelectedAll;
-  }, [assets]);
+  }, [assets, isListing]);
 
-  const onWithdraw = async (asset: any) => {
-    return await withdrawErc721(client, asset, account, starkKey);
-  };
+  const numberSelect = useMemo(() => {
+    const numberSelect = assets.reduce((prevValue, assetData: any) => {
+      if (isListing) {
+        if (
+          !(assetData.order && assetData.order?.length > 0) &&
+          assetData.isSelectedBulk
+        ) {
+          return prevValue + 1;
+        }
+        return prevValue;
+      } else {
+        if (
+          assetData.order &&
+          assetData.order?.length > 0 &&
+          assetData.isSelectedBulk
+        ) {
+          return prevValue + 1;
+        }
+        return prevValue;
+      }
+    }, 0);
+    return numberSelect;
+  }, [assets, isListing]);
+
+  const numberAvailableAssets = useMemo(() => {
+    const numberSelect = assets.reduce((prevValue, assetData: any) => {
+      if (isListing) {
+        if (!(assetData.order && assetData.order?.length > 0)) {
+          return prevValue + 1;
+        }
+        return prevValue;
+      } else {
+        if (assetData.order && assetData.order?.length > 0) {
+          return prevValue + 1;
+        }
+        return prevValue;
+      }
+    }, 0);
+    return numberSelect;
+  }, [assets, isListing]);
+
+  // const onWithdraw = async (asset: any) => {
+  //   return await withdrawErc721(client, asset, account, starkKey);
+  // };
 
   const onList = async (asset: any, price: string) => {
     try {
@@ -157,10 +239,17 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       await refetch();
     } catch (error) {}
   };
+  const onUnListing = async (asset: any) => {
+    try {
+      await unListErc721(client, account, asset);
+      await refetch();
+    } catch (error) {
+    }
+  };
 
-  const onSelectList = (index: number, statusCheck: boolean) => {
+  const onSelectItem = (index: number, statusCheck: boolean) => {
     const newAsset = assets.map((asset: any, idx: number) => {
-      if (index === idx) return { ...asset, isSelectedBulkList: statusCheck };
+      if (index === idx) return { ...asset, isSelectedBulk: statusCheck };
       return asset;
     });
     setAssets(newAsset);
@@ -169,38 +258,59 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   const handleSelectAllList = () => {
     const newAsset = assets.map((asset: any, idx: number) => {
       if (asset.order && asset.order?.length > 0) {
-        return { ...asset };
+        if (isListing) {
+          return { ...asset };
+        } else {
+          return {
+            ...asset,
+            isSelectedBulk: !isSelectedAll,
+          };
+        }
+      } else {
+        if (isListing) {
+          return { ...asset, isSelectedBulk: !isSelectedAll };
+        } else {
+          return { ...asset };
+        }
       }
-      return { ...asset, isSelectedBulkList: !isSelectedAll };
     });
     setAssets(newAsset);
   };
 
-  const onBulkList = async (price: string) => {
-    const assetSelectList = assets.filter((assetData: any) => {
-      return assetData.isSelectedBulkList === true;
+  const onBulkHandle = async (price: string) => {
+    const assetSelectAction = assets.filter((assetData: any) => {
+      return assetData.isSelectedBulk === true;
     });
-    if (assetSelectList.length === 0) {
-      toast.warning("Please select asset to listing!");
+    if (assetSelectAction.length === 0) {
+      if (isListing) {
+        toast.warning("Please select asset to listing!");
+      } else {
+        toast.warning("Please select asset to unlisting!");
+      }
       return;
     }
-    setLoadingBulkListing(true);
+    setLoadingBulkHandle(true);
     try {
-      await bulkListErc721(
-        client,
-        account,
-        starkKey,
-        assetSelectList,
-        price,
-        selectedToken.tokenType
-      );
-      toast.success("Listing success!");
+      if (isListing) {
+        await bulkListErc721(
+          client,
+          account,
+          starkKey,
+          assetSelectAction,
+          price,
+          selectedToken.tokenType
+        );
+        toast.success("Listing success!");
+      } else {
+        await bulkUnListErc721(client, account, assetSelectAction);
+        toast.success("UnListing success!");
+      }
       await refetch();
-      setLoadingBulkListing(false);
+      setLoadingBulkHandle(false);
     } catch (error) {
       console.log("Listing error: ", error);
       toast.error("Listing failed. Please check exception and try again !");
-      setLoadingBulkListing(false);
+      setLoadingBulkHandle(false);
     }
   };
 
@@ -260,13 +370,27 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                   />
                   <p className="ms-2 mb-0">Select All</p>
                 </div>
+                <div className="col d-flex flex-col align-items-center">
+                  <CurrencySelector
+                    className={"col"}
+                    options={optionsSelect}
+                    selectHandle={selectListingOption}
+                    defaultSelectedOption={optionsSelect.listing}
+                  />
+                </div>
                 <div className="col d-flex align-items-end justify-content-center justify-content-md-end">
                   <button
-                    disabled={loadingBulkListing}
+                    disabled={loadingBulkHandle}
                     className={`btn-mry bg-warning fw-bold text-dark d-flex align-items-center justify-content-center ${style.btnListing}`}
-                    onClick={() => onBulkList(price)}
+                    onClick={() => onBulkHandle(price)}
                   >
-                    {loadingBulkListing ? <Loading /> : "Bulk list NFTs"}
+                    {loadingBulkHandle ? (
+                      <Loading />
+                    ) : isListing ? (
+                      "Bulk List NFTs"
+                    ) : (
+                      "Bulk Unlist NFTs"
+                    )}
                   </button>
                 </div>
               </div>
@@ -318,6 +442,12 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                   </button>
                 </div>
               </div>
+              <div className="row mt-4">
+                <p className="d-flex justify-content-end col">
+                  Selected: {numberSelect} / Total Ready{" "}
+                  {isListing ? "Listing" : "Unlisting"}: {numberAvailableAssets}
+                </p>
+              </div>
             </div>
             {assets.length === 0 ? <p>No assets available</p> : null}
             {isFetching ? (
@@ -332,15 +462,16 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                     client={client}
                     item={asset}
                     index={index}
-                    onButtonClick1={async () => onWithdraw(asset)}
-                    buttonTitle1="Withdraw NFT"
+                    onButtonClick1={async () => onUnListing(asset)}
+                    buttonTitle1="Unlisting"
                     onButtonClick2={async () => onList(asset.id, price)}
                     buttonTitle2="List NFT"
                     title={asset.name}
                     footer={`${asset.id} | ${asset.publicId}`}
-                    isSelected={asset.isSelectedBulkList}
-                    onSelectList={onSelectList}
+                    isSelected={asset.isSelectedBulk}
+                    onSelectItem={onSelectItem}
                     disabled={asset.order?.length > 0}
+                    isListing={isListing}
                   />
                 </div>
               ))
