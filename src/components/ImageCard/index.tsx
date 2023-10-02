@@ -16,8 +16,9 @@ type Props = {
   title: string;
   footer: string;
   isSelected: boolean;
-  onSelectList: (index: number, statusCheck: boolean) => void;
+  onSelectItem: (index: number, statusCheck: boolean) => void;
   disabled: boolean;
+  isListing: boolean;
 };
 
 const ImageCard = ({
@@ -31,14 +32,15 @@ const ImageCard = ({
   title,
   footer,
   isSelected,
-  onSelectList,
+  onSelectItem,
   disabled,
+  isListing
 }: Props) => {
   const [loadingButton1, setLoadingButton1] = useState(false);
   const [loadingButton2, setLoadingButton2] = useState(false);
 
   const handleChangeCheckbox = () => {
-    onSelectList(index, !isSelected);
+    onSelectItem(index, !isSelected);
   };
   const myriaTokenAddress =
     client?.env === EnvTypes.PRODUCTION
@@ -54,7 +56,7 @@ const ImageCard = ({
     item?.id;
   const priceAsset = item?.order?.[0]?.nonQuantizedAmountBuy || "";
   return (
-    <div className="position-relative">
+    <div className="position-relative w-100">
       {loadingButton1 || loadingButton2 ? (
         <Loading
           color="#FFC107"
@@ -66,13 +68,13 @@ const ImageCard = ({
         className={`card mry-card position-relative h-100`}
         key={item.id}
         style={{
-          opacity: disabled || loadingButton1 || loadingButton2 ? "0.5" : 1,
+          opacity: (disabled && isListing) || loadingButton1 || loadingButton2 ? "0.5" : 1,
         }}
       >
         <input
           onChange={handleChangeCheckbox}
           className={`${
-            disabled ? "pe-none" : ""
+            disabled && isListing ? "pe-none" : ""
           } form-check-input position-absolute`}
           type="checkbox"
           checked={isSelected}
@@ -89,38 +91,26 @@ const ImageCard = ({
             <p className="card-text">{item.description}</p>
           </div>
           <div className="mt-4">
-            {/* <p
-              className={`card-link ${
-                disabled || loadingButton1 ? "pe-none" : ""
-              }`}
-              onClick={async () => {
-                setLoadingButton1(true);
-                try {
-                  onButtonClick1(item);
-                  setLoadingButton1(false);
-                } catch (error) {
-                  setLoadingButton1(false);
-                }
-              }}
-            >
-              {buttonTitle1}
-            </p> */}
             {onButtonClick2 && buttonTitle2 ? (
               <p
                 className={`ms-0 card-link ${
-                  disabled || loadingButton2 ? "pe-none" : ""
+                  loadingButton2 ? "pe-none" : ""
                 }`}
                 onClick={async () => {
                   setLoadingButton2(true);
                   try {
-                    await onButtonClick2(item.id);
+                    if(disabled) {
+                      await onButtonClick1(item.id);
+                    } else {
+                      await onButtonClick2(item.id);
+                    }
                     setLoadingButton2(false);
                   } catch (error) {
                     setLoadingButton2(false);
                   }
                 }}
               >
-                {buttonTitle2}
+                {disabled ? buttonTitle1 : buttonTitle2}
               </p>
             ) : null}
           </div>

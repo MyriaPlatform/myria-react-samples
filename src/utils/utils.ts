@@ -7,7 +7,7 @@ export interface TOption {
     ico: string;
     // tokenAddress: string;
     // assetType?: string;
-    tokenType: TokenType;
+    tokenType?: TokenType;
     iconComponent?: (props: string) => JSX.Element;
   }
   
