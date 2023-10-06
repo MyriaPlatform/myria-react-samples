@@ -54,7 +54,7 @@ const ImageCard = ({
       ? `https://myria.com/marketplace/asset-detail/?id=`
       : `https://staging.nonprod-myria.com/marketplace/asset-detail/?id=`) +
     item?.id;
-  const priceAsset = item?.order?.[0]?.nonQuantizedAmountBuy || "";
+  const priceAsset = item?.order?.nonQuantizedAmountBuy || item?.order?.[0]?.nonQuantizedAmountBuy || "";
   return (
     <div className="position-relative w-100">
       {loadingButton1 || loadingButton2 ? (
