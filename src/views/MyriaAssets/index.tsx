@@ -86,13 +86,14 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     localStorage.setItem("isListing", String(param.id));
     // Unlisting - set to default page 1
     if (param.id === 4) {
-      setInputCurrentPage(1);
+      // setInputCurrentPage(1);
     } 
     await refetch();
   };
 
   const getErc721 = async (valueCollectionId: string, inputCurrentPage: number) => {
     let data: any;
+
     if (valueCollectionId && valueCollectionId.length > 0) {
       const listAssetData = await getListAssetByCollectionId(inputCurrentPage);
       if (listAssetData.data.items) {
@@ -110,6 +111,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       const assetDatas = data.map((assetData: any, idx: number) => {
         return { ...assetData, isSelectedBulk: false };
       });
+      console.log('Asset data => ', assetDatas);
       return assetDatas;
     } else {
       return [];
@@ -137,13 +139,14 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["queryAssets", inputCurrentPage],
+    queryKey: ["queryAssets"],
     queryFn: async () => await getErc721(inputCollectionId, inputCurrentPage),
     enabled: isConnected && client?.env.length > 0 && starkKey.length > 10,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
+    console.log('dataQueryGetERC721 => ', dataQueryGetERC721);
     if (dataQueryGetERC721) {
       const assetData = dataQueryGetERC721
         .map((assetData: any, idx: number) => {
