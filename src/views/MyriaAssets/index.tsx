@@ -167,13 +167,17 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   const isSelectedAll = useMemo(() => {
     const isSelectedAll = assets.every((assetData) => {
+      const isOwner =
+        starkKey.toLowerCase() ===
+        (assetData.owner?.toLowerCase() || assetData.starkKey?.toLowerCase());
       if (isListing) {
         if (
           !assetData.isSelectedBulk &&
           !(
             assetData.order &&
             (!!assetData.order?.id || assetData.order?.length > 0)
-          )
+          ) &&
+          isOwner
         ) {
           return false;
         }
@@ -182,7 +186,8 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
         if (
           !assetData.isSelectedBulk &&
           assetData.order &&
-          (assetData.order?.id || assetData.order?.length > 0)
+          (assetData.order?.id || assetData.order?.length > 0) &&
+          isOwner
         ) {
           return false;
         }
@@ -221,12 +226,16 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   const numberAvailableAssets = useMemo(() => {
     const numberSelect = assets.reduce((prevValue, assetData: any) => {
+      const isOwner =
+        starkKey.toLowerCase() ===
+        (assetData.owner?.toLowerCase() || assetData.starkKey?.toLowerCase());
       if (isListing) {
         if (
           !(
             assetData.order &&
             (!!assetData.order?.id || assetData.order?.length > 0)
-          )
+          ) &&
+          isOwner
         ) {
           return prevValue + 1;
         }
@@ -234,7 +243,8 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       } else {
         if (
           assetData.order &&
-          (!!assetData.order?.id || assetData.order?.length > 0)
+          (!!assetData.order?.id || assetData.order?.length > 0) &&
+          isOwner
         ) {
           return prevValue + 1;
         }
@@ -248,13 +258,13 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   //   return await withdrawErc721(client, asset, account, starkKey);
   // };
 
-  const onList = async (asset: any, price: string) => {
+  const onList = async (assetId: string, price: string) => {
     try {
       await listErc721(
         client,
         account,
         starkKey,
-        asset,
+        assetId,
         price,
         selectedToken.tokenType
       );
@@ -278,18 +288,32 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   const handleSelectAllList = () => {
     const newAsset = assets.map((asset: any, idx: number) => {
+      const isOwner =
+        starkKey.toLowerCase() ===
+        (asset.owner?.toLowerCase() || asset.starkKey?.toLowerCase());
       if (asset.order && (!!asset.order?.id || asset.order?.length > 0)) {
         if (isListing) {
           return { ...asset };
         } else {
-          return {
-            ...asset,
-            isSelectedBulk: !isSelectedAll,
-          };
+          if (isOwner) {
+            return {
+              ...asset,
+              isSelectedBulk: !isSelectedAll,
+            };
+          } else {
+            return { ...asset };
+          }
         }
       } else {
         if (isListing) {
-          return { ...asset, isSelectedBulk: !isSelectedAll };
+          if (isOwner) {
+            return {
+              ...asset,
+              isSelectedBulk: !isSelectedAll,
+            };
+          } else {
+            return { ...asset };
+          }
         } else {
           return { ...asset };
         }

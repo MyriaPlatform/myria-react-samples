@@ -8,10 +8,11 @@ export async function unListErc721(
 ) {
   const moduleFactory = new ModuleFactory(client);
   const orderModule = moduleFactory.getOrderManager();
-  if (!account || !assets?.order?.[0].id) return;
+  const orderId = assets?.order?.[0]?.id || assets?.order?.id;
+  if (!account || !orderId) return;
   try {
     const result = await orderModule?.deleteOrderById({
-      orderId: assets?.order?.[0].id,
+      orderId: orderId,
       sellerWalletAddress: account,
     });
     toast.success("Delisting asset(s) successfully!");

@@ -9,9 +9,10 @@ export async function bulkUnListErc721(
   const orderModule = moduleFactory.getOrderManager();
   try {
     for (let i = 0; i < assets.length; i++) {
-      if (!account || !assets[i]?.order?.[0].id) return;
+      const orderId = assets[i]?.order?.[0]?.id || assets[i]?.order?.id;
+      if (!account || !orderId) return;
       const result = await orderModule?.deleteOrderById({
-        orderId: assets[i]?.order?.[0].id,
+        orderId: orderId,
         sellerWalletAddress: account,
       });
       console.log(`UnListed asset #${i}`)
