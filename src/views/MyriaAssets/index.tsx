@@ -4,7 +4,7 @@ import {
   MyriaClient,
   TokenType,
 } from "myria-core-sdk";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ImageCard from "../../components/ImageCard";
 import { getMyriaErc721ByStarkKey } from "../../samples/assets/get-myria-erc721";
 import { listErc721 } from "../../samples/assets/list-erc721";
@@ -81,14 +81,21 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   const selectCurrency = (param: any) => {
     setSelectedToken(param);
   };
-  const selectListingOption = (param: any) => {
+  const selectListingOption = async (param: any) => {
     setIsListing(param.id === 3);
+    localStorage.setItem("isListing", String(param.id));
+    // Unlisting - set to default page 1
+    if (param.id === 4) {
+      // setInputCurrentPage(1);
+    } 
+    await refetch();
   };
 
-  const getErc721 = async (inputCollectionId: string) => {
+  const getErc721 = async (valueCollectionId: string, inputCurrentPage: number) => {
     let data: any;
-    if (inputCollectionId && inputCollectionId.length > 0) {
-      const listAssetData = await getListAssetByCollectionId();
+
+    if (valueCollectionId && valueCollectionId.length > 0) {
+      const listAssetData = await getListAssetByCollectionId(inputCurrentPage);
       if (listAssetData.data.items) {
         data = listAssetData.data.items;
       } else data = [];
@@ -104,16 +111,18 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       const assetDatas = data.map((assetData: any, idx: number) => {
         return { ...assetData, isSelectedBulk: false };
       });
+      console.log('Asset data => ', assetDatas);
       return assetDatas;
     } else {
       return [];
     }
   };
 
-  const getListAssetByCollectionId = async () => {
+  const getListAssetByCollectionId = async (inputCurrentPage: number) => {
+    const isListingValue = localStorage.getItem("isListing");
     const payload: GetAssetByCollectionParams = {
       collectionId: Number(inputCollectionId),
-      assetType: "ALL",
+      assetType: Number(isListingValue) === 4 ? "FOR_SALE" : "ALL",
       limit: inputLimitPerPage,
       page: inputCurrentPage,
       assetTypeOutput: "ASSETS",
@@ -122,6 +131,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       client.env
     );
     return collectionManager.getAssetByCollectionId(payload);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const {
@@ -130,19 +140,23 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     refetch,
   } = useQuery({
     queryKey: ["queryAssets"],
-    queryFn: async () => await getErc721(inputCollectionId),
+    queryFn: async () => await getErc721(inputCollectionId, inputCurrentPage),
     enabled: isConnected && client?.env.length > 0 && starkKey.length > 10,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
+    console.log('dataQueryGetERC721 => ', dataQueryGetERC721);
     if (dataQueryGetERC721) {
       const assetData = dataQueryGetERC721
         .map((assetData: any, idx: number) => {
           return { ...assetData, isSelectedBulk: false };
         })
         .sort((assetData1: any, assetData2: any) => {
-          if (assetData1.order && assetData1.order?.length) {
+          if (
+            assetData1.order &&
+            (!!assetData1.order?.id || assetData1.order?.length)
+          ) {
             return 1;
           } else {
             return -1;
@@ -151,7 +165,8 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
         .filter((assetData: any) => {
           return isListing
             ? true
-            : assetData.order && assetData.order?.length > 0;
+            : assetData.order &&
+                (assetData.order?.length > 0 || !!assetData.order?.id);
         });
       setAssets(assetData);
     }
@@ -159,10 +174,17 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   const isSelectedAll = useMemo(() => {
     const isSelectedAll = assets.every((assetData) => {
+      const isOwner =
+        starkKey.toLowerCase() ===
+        (assetData.owner?.toLowerCase() || assetData.starkKey?.toLowerCase());
       if (isListing) {
         if (
           !assetData.isSelectedBulk &&
-          !(assetData.order && assetData.order?.length > 0)
+          !(
+            assetData.order &&
+            (!!assetData.order?.id || assetData.order?.length > 0)
+          ) &&
+          isOwner
         ) {
           return false;
         }
@@ -171,7 +193,8 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
         if (
           !assetData.isSelectedBulk &&
           assetData.order &&
-          assetData.order?.length > 0
+          (assetData.order?.id || assetData.order?.length > 0) &&
+          isOwner
         ) {
           return false;
         }
@@ -185,7 +208,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     const numberSelect = assets.reduce((prevValue, assetData: any) => {
       if (isListing) {
         if (
-          !(assetData.order && assetData.order?.length > 0) &&
+          !(
+            assetData.order &&
+            (!!assetData.order.id || assetData.order?.length > 0)
+          ) &&
           assetData.isSelectedBulk
         ) {
           return prevValue + 1;
@@ -194,7 +220,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       } else {
         if (
           assetData.order &&
-          assetData.order?.length > 0 &&
+          (!!assetData.order.id || assetData.order?.length > 0) &&
           assetData.isSelectedBulk
         ) {
           return prevValue + 1;
@@ -207,13 +233,26 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   const numberAvailableAssets = useMemo(() => {
     const numberSelect = assets.reduce((prevValue, assetData: any) => {
+      const isOwner =
+        starkKey.toLowerCase() ===
+        (assetData.owner?.toLowerCase() || assetData.starkKey?.toLowerCase());
       if (isListing) {
-        if (!(assetData.order && assetData.order?.length > 0)) {
+        if (
+          !(
+            assetData.order &&
+            (!!assetData.order?.id || assetData.order?.length > 0)
+          ) &&
+          isOwner
+        ) {
           return prevValue + 1;
         }
         return prevValue;
       } else {
-        if (assetData.order && assetData.order?.length > 0) {
+        if (
+          assetData.order &&
+          (!!assetData.order?.id || assetData.order?.length > 0) &&
+          isOwner
+        ) {
           return prevValue + 1;
         }
         return prevValue;
@@ -226,13 +265,13 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   //   return await withdrawErc721(client, asset, account, starkKey);
   // };
 
-  const onList = async (asset: any, price: string) => {
+  const onList = async (assetId: string, price: string) => {
     try {
       await listErc721(
         client,
         account,
         starkKey,
-        asset,
+        assetId,
         price,
         selectedToken.tokenType
       );
@@ -243,8 +282,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     try {
       await unListErc721(client, account, asset);
       await refetch();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const onSelectItem = (index: number, statusCheck: boolean) => {
@@ -257,18 +295,32 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
 
   const handleSelectAllList = () => {
     const newAsset = assets.map((asset: any, idx: number) => {
-      if (asset.order && asset.order?.length > 0) {
+      const isOwner =
+        starkKey.toLowerCase() ===
+        (asset.owner?.toLowerCase() || asset.starkKey?.toLowerCase());
+      if (asset.order && (!!asset.order?.id || asset.order?.length > 0)) {
         if (isListing) {
           return { ...asset };
         } else {
-          return {
-            ...asset,
-            isSelectedBulk: !isSelectedAll,
-          };
+          if (isOwner) {
+            return {
+              ...asset,
+              isSelectedBulk: !isSelectedAll,
+            };
+          } else {
+            return { ...asset };
+          }
         }
       } else {
         if (isListing) {
-          return { ...asset, isSelectedBulk: !isSelectedAll };
+          if (isOwner) {
+            return {
+              ...asset,
+              isSelectedBulk: !isSelectedAll,
+            };
+          } else {
+            return { ...asset };
+          }
         } else {
           return { ...asset };
         }
@@ -283,9 +335,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     });
     if (assetSelectAction.length === 0) {
       if (isListing) {
-        toast.warning("Please select asset to listing!");
+        toast.warning("Please select an asset for listing");
       } else {
-        toast.warning("Please select asset to unlisting!");
+        toast.warning("Please select an asset for unlisting");
       }
       return;
     }
@@ -300,10 +352,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
           price,
           selectedToken.tokenType
         );
-        toast.success("Listing success!");
+        toast.success("Listing Successful!");
       } else {
         await bulkUnListErc721(client, account, assetSelectAction);
-        toast.success("UnListing success!");
+        toast.success("UnListing Successful!");
       }
       await refetch();
       setLoadingBulkHandle(false);
@@ -342,7 +394,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
           <>
             <div className="row py-3 mb-3 list-form">
               <div className="row align-items-center">
-                <div className="col">
+                <div
+                  className={`col ${!isListing ? "pe-none opacity-50" : ""}`}
+                >
                   <input
                     type="text"
                     name="price"
@@ -352,7 +406,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                     placeholder="Price"
                   />
                 </div>
-                <div className="col">
+                <div
+                  className={`col ${!isListing ? "pe-none opacity-50" : ""}`}
+                >
                   <CurrencySelector
                     className={"col"}
                     options={optionsAsset}
@@ -470,7 +526,12 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                     footer={`${asset.id} | ${asset.publicId}`}
                     isSelected={asset.isSelectedBulk}
                     onSelectItem={onSelectItem}
-                    disabled={asset.order?.length > 0}
+                    disabledUI={asset.order?.length > 0 || !!asset.order?.id}
+                    disabledAll={
+                      starkKey.toLowerCase() !==
+                      (asset.owner?.toLowerCase() ||
+                        asset.starkKey?.toLowerCase())
+                    }
                     isListing={isListing}
                   />
                 </div>
