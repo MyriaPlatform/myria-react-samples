@@ -81,9 +81,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   const selectCurrency = (param: any) => {
     setSelectedToken(param);
   };
-  const selectListingOption = async(param: any) => {
+  const selectListingOption = async (param: any) => {
     setIsListing(param.id === 3);
-    localStorage.setItem("isListing", String(param.id))
+    localStorage.setItem("isListing", String(param.id));
     await refetch();
   };
 
@@ -113,7 +113,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   };
 
   const getListAssetByCollectionId = async () => {
-    const isListingValue = localStorage.getItem("isListing")
+    const isListingValue = localStorage.getItem("isListing");
     const payload: GetAssetByCollectionParams = {
       collectionId: Number(inputCollectionId),
       assetType: Number(isListingValue) === 4 ? "FOR_SALE" : "ALL",
@@ -125,7 +125,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       client.env
     );
     return collectionManager.getAssetByCollectionId(payload);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const {
@@ -146,7 +146,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
           return { ...assetData, isSelectedBulk: false };
         })
         .sort((assetData1: any, assetData2: any) => {
-          if (assetData1.order && (!!assetData1.order?.id || assetData1.order?.length)) {
+          if (
+            assetData1.order &&
+            (!!assetData1.order?.id || assetData1.order?.length)
+          ) {
             return 1;
           } else {
             return -1;
@@ -155,19 +158,22 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
         .filter((assetData: any) => {
           return isListing
             ? true
-            : assetData.order && (assetData.order?.length > 0 || !!assetData.order?.id);
+            : assetData.order &&
+                (assetData.order?.length > 0 || !!assetData.order?.id);
         });
       setAssets(assetData);
     }
   }, [dataQueryGetERC721, isListing]);
-  
 
   const isSelectedAll = useMemo(() => {
     const isSelectedAll = assets.every((assetData) => {
       if (isListing) {
         if (
           !assetData.isSelectedBulk &&
-          !(assetData.order && (!!assetData.order?.id || assetData.order?.length > 0))
+          !(
+            assetData.order &&
+            (!!assetData.order?.id || assetData.order?.length > 0)
+          )
         ) {
           return false;
         }
@@ -175,7 +181,8 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
       } else {
         if (
           !assetData.isSelectedBulk &&
-          assetData.order && (assetData.order?.id || assetData.order?.length > 0)
+          assetData.order &&
+          (assetData.order?.id || assetData.order?.length > 0)
         ) {
           return false;
         }
@@ -189,7 +196,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     const numberSelect = assets.reduce((prevValue, assetData: any) => {
       if (isListing) {
         if (
-          !(assetData.order && (!!assetData.order.id || assetData.order?.length > 0)) &&
+          !(
+            assetData.order &&
+            (!!assetData.order.id || assetData.order?.length > 0)
+          ) &&
           assetData.isSelectedBulk
         ) {
           return prevValue + 1;
@@ -212,12 +222,20 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
   const numberAvailableAssets = useMemo(() => {
     const numberSelect = assets.reduce((prevValue, assetData: any) => {
       if (isListing) {
-        if (!(assetData.order && (!!assetData.order?.id || assetData.order?.length > 0))) {
+        if (
+          !(
+            assetData.order &&
+            (!!assetData.order?.id || assetData.order?.length > 0)
+          )
+        ) {
           return prevValue + 1;
         }
         return prevValue;
       } else {
-        if (assetData.order && (!!assetData.order?.id || assetData.order?.length > 0)) {
+        if (
+          assetData.order &&
+          (!!assetData.order?.id || assetData.order?.length > 0)
+        ) {
           return prevValue + 1;
         }
         return prevValue;
@@ -247,8 +265,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     try {
       await unListErc721(client, account, asset);
       await refetch();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const onSelectItem = (index: number, statusCheck: boolean) => {
@@ -346,7 +363,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
           <>
             <div className="row py-3 mb-3 list-form">
               <div className="row align-items-center">
-                <div className={`col ${!isListing ? "pe-none opacity-50": ""}`}>
+                <div
+                  className={`col ${!isListing ? "pe-none opacity-50" : ""}`}
+                >
                   <input
                     type="text"
                     name="price"
@@ -356,7 +375,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                     placeholder="Price"
                   />
                 </div>
-                <div className={`col ${!isListing ? "pe-none opacity-50": ""}`}>
+                <div
+                  className={`col ${!isListing ? "pe-none opacity-50" : ""}`}
+                >
                   <CurrencySelector
                     className={"col"}
                     options={optionsAsset}
@@ -474,7 +495,12 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                     footer={`${asset.id} | ${asset.publicId}`}
                     isSelected={asset.isSelectedBulk}
                     onSelectItem={onSelectItem}
-                    disabled={asset.order?.length > 0 || (!!asset.order?.id)}
+                    disabledUI={asset.order?.length > 0 || !!asset.order?.id}
+                    disabledAll={
+                      starkKey.toLowerCase() !==
+                      (asset.owner?.toLowerCase() ||
+                        asset.starkKey?.toLowerCase())
+                    }
                     isListing={isListing}
                   />
                 </div>
