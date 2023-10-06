@@ -112,7 +112,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     }
   };
 
-  const getListAssetByCollectionId = useCallback(async () => {
+  const getListAssetByCollectionId = async () => {
     const isListingValue = localStorage.getItem("isListing")
     const payload: GetAssetByCollectionParams = {
       collectionId: Number(inputCollectionId),
@@ -126,7 +126,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     );
     return collectionManager.getAssetByCollectionId(payload);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isListing, inputCollectionId]);
+  };
 
   const {
     data: dataQueryGetERC721,
@@ -287,9 +287,9 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
     });
     if (assetSelectAction.length === 0) {
       if (isListing) {
-        toast.warning("Please select asset to listing!");
+        toast.warning("Please select an asset for listing");
       } else {
-        toast.warning("Please select asset to unlisting!");
+        toast.warning("Please select an asset for unlisting");
       }
       return;
     }
@@ -304,10 +304,10 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
           price,
           selectedToken.tokenType
         );
-        toast.success("Listing success!");
+        toast.success("Listing Successful!");
       } else {
         await bulkUnListErc721(client, account, assetSelectAction);
-        toast.success("UnListing success!");
+        toast.success("UnListing Successful!");
       }
       await refetch();
       setLoadingBulkHandle(false);
@@ -346,7 +346,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
           <>
             <div className="row py-3 mb-3 list-form">
               <div className="row align-items-center">
-                <div className="col">
+                <div className={`col ${!isListing ? "pe-none opacity-50": ""}`}>
                   <input
                     type="text"
                     name="price"
@@ -356,7 +356,7 @@ const MyriaAssets = ({ isConnected, account, starkKey, client }: Props) => {
                     placeholder="Price"
                   />
                 </div>
-                <div className="col">
+                <div className={`col ${!isListing ? "pe-none opacity-50": ""}`}>
                   <CurrencySelector
                     className={"col"}
                     options={optionsAsset}
