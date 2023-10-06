@@ -110,9 +110,9 @@ const ImageCard = ({
                   setLoadingButton2(true);
                   try {
                     if (disabledUI) {
-                      await onButtonClick1(item.id);
+                      await onButtonClick1(item.id); // Unlisting
                     } else {
-                      await onButtonClick2(item.id);
+                      await onButtonClick2(item.id); // Listing
                     }
                     setLoadingButton2(false);
                   } catch (error) {
