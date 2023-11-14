@@ -4,7 +4,7 @@ export async function getEthErc721(account: string) {
   // this is a test api key, replace it with yours
   const config = {
     apiKey: "kmzrSbbtp1TmmGpJ3WvlQbOKjihk4rLF",
-    network: Network.ETH_GOERLI,
+    network: Network.ETH_GOERLI, // Todo  Migrate To Sepolia
   };
   const alchemy = new Alchemy(config);
 

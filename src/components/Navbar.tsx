@@ -52,7 +52,7 @@ const Navbar = ({
             </ul>
             <div className="col-6 justify-content-end d-flex">
               <SwitchToogleNetWork
-                label={netWorkIdUser === netWorkID.MAINNET ? "Mainnet" : "Goerli"}
+                label={netWorkIdUser === netWorkID.MAINNET ? "Mainnet" : "Sepolia"}
                 toggled={netWorkIdUser === netWorkID.MAINNET}
                 setNetWorkIdByUser={setNetWorkIdByUser}
                 isConnected={isConnectedWallet}

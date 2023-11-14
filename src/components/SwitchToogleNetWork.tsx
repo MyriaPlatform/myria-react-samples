@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { netWorkID } from "../helpers/useMetamask";
+import { NetworkID } from "../helpers/useMetamask";
 import { toast } from "react-toastify";
 
 type Props = {
   label: string;
   toggled: boolean;
   isConnected: boolean;
-  setNetWorkIdByUser: React.Dispatch<React.SetStateAction<netWorkID>>;
+  setNetWorkIdByUser: React.Dispatch<React.SetStateAction<NetworkID>>;
 };
 
 const SwitchToogleNetWork = ({
@@ -19,9 +19,9 @@ const SwitchToogleNetWork = ({
 
   const handleClick = () => {
       if (isToggled === true) {
-        setNetWorkIdByUser(netWorkID.GOERLI);
+        setNetWorkIdByUser(NetworkID.SEPOLIA);
       } else {
-        setNetWorkIdByUser(netWorkID.MAINNET);
+        setNetWorkIdByUser(NetworkID.MAINNET);
       }
       toggle(!isToggled);
   };
