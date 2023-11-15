@@ -9,7 +9,7 @@ import {
   TokenType,
 } from "myria-core-sdk";
 export const QUANTUM = "10000000000";
-export const myriaTokenAddress = "0xA06116D9E28AF403d6989c45EF8C0b9B971e5E12";
+export const myriaTokenAddress = "0x83a795E1E91560Aae4207fDae9199d384f11D9d2";
 const partnerRefId = "Myria-Internal-System";
 const erc20Description = "Myria-Internal-System-Transfer-MYR-Tokens";
 

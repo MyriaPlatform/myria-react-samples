@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import SwitchToogleNetWork from "./SwitchToogleNetWork";
-import { netWorkID } from "../helpers/useMetamask";
+import { NetworkID } from "../helpers/useMetamask";
 
 type Props = {
   items: any;
@@ -8,8 +8,8 @@ type Props = {
   buttonTitle: string;
   onButtonClick: any;
   isConnectedWallet: boolean;
-  netWorkIdUser: netWorkID;
-  setNetWorkIdByUser: React.Dispatch<React.SetStateAction<netWorkID>>;
+  netWorkIdUser: NetworkID;
+  setNetWorkIdByUser: React.Dispatch<React.SetStateAction<NetworkID>>;
 };
 
 const Navbar = ({
@@ -52,8 +52,8 @@ const Navbar = ({
             </ul>
             <div className="col-6 justify-content-end d-flex">
               <SwitchToogleNetWork
-                label={netWorkIdUser === netWorkID.MAINNET ? "Mainnet" : "Goerli"}
-                toggled={netWorkIdUser === netWorkID.MAINNET}
+                label={netWorkIdUser === NetworkID.MAINNET ? "Mainnet" : "Sepolia"}
+                toggled={netWorkIdUser === NetworkID.MAINNET}
                 setNetWorkIdByUser={setNetWorkIdByUser}
                 isConnected={isConnectedWallet}
               />

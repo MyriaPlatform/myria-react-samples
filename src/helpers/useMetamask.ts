@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { getModuleFactory, signMetamask } from "./myriaCoreSDK";
-import { MyriaClient, UserDataResponse } from "myria-core-sdk";
+import { MyriaClient, Networks, UserDataResponse } from "myria-core-sdk";
 import { getMyriaClient } from "../samples/common/myria-client";
 
 export const changeNetwork = async (provider: any, ENV_CHAIN_ID: number) => {
@@ -45,9 +45,10 @@ const getProviderOptions = () => ({
   },
 });
 
-export enum netWorkID {
-  MAINNET = 1,
-  GOERLI = 5
+export enum NetworkID {
+  MAINNET = Networks.MAINNET,
+  GOERLI = Networks.GOERLI,
+  SEPOLIA = Networks.SEPOLIA
 }
 
 const useMetamask = () => {
@@ -55,7 +56,7 @@ const useMetamask = () => {
   const [walletAdrress, setWalletAddress] = useState("0x");
   const [starkKey, setStarkKey] = useState("0x");
   const [myriaClient, setMyriaClient] = useState<MyriaClient>(null);
-  const [netWorkIdUser, setNetWorkIdByUser] = useState<netWorkID>(netWorkID.MAINNET);
+  const [netWorkIdUser, setNetWorkIdByUser] = useState<NetworkID>(NetworkID.MAINNET);
   const checkIfMetaMaskInstalled = () => {
     const { ethereum } = window;
     if (Boolean(ethereum && ethereum.isMetaMask)) {
@@ -94,7 +95,7 @@ const useMetamask = () => {
 
   async function connectL2Wallet() {
     const tWebModal = new Web3Modal({
-      network: netWorkIdUser === netWorkID.MAINNET ? "MAINNET" : "GOERLI",
+      network: netWorkIdUser === NetworkID.MAINNET ? "MAINNET" : "SEPOLIA",
       cacheProvider: true,
       providerOptions: getProviderOptions(),
     });
